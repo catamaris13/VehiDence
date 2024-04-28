@@ -33,7 +33,7 @@ const history=useNavigate();
           
          
         }
-        const url='https://localhost:7165/api/User/Login';
+        const url='https://localhost:5277/api/User/Login';
         console.log(data)
         axios.post(url,data)
         .then((result)=>{
