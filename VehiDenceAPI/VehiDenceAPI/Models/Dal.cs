@@ -11,6 +11,12 @@ namespace VehiDenceAPI.Models
 {
     public class Dal
     {
+        /// <summary>
+        /// Tot ce tine de user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="connection"></param>
+        /// <returns></returns>
         public Response Registration(Users user, SqlConnection connection)
         {
             Response response = new Response();
@@ -237,7 +243,12 @@ namespace VehiDenceAPI.Models
 
             return users;
         }
-
+        /// <summary>
+        /// Tot ce tine de masina
+        /// </summary>
+        /// <param name="masina"></param>
+        /// <param name="connection"></param>
+        /// <returns></returns>
         public Response AddMasina(Masina masina, SqlConnection connection)
         {
             Response response = new Response();
@@ -302,6 +313,9 @@ namespace VehiDenceAPI.Models
                     ma.Marca = Convert.ToString(dt.Rows[i]["Marca"]);
                     ma.Model = Convert.ToString(dt.Rows[i]["Model"]);
                     ma.Username = Convert.ToString(dt.Rows[i]["Username"]);
+                    //ma.ImageData = (byte[])dt.Rows[i]["ImageData"]; 
+                    ma.ImageData = dt.Rows[i]["ImageData"] as byte[];
+
                     list.Add(ma);
                 }
                 if (list.Count > 0)
@@ -345,7 +359,12 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
-
+        /// <summary>
+        /// Tot ce tine de asigurare
+        /// </summary>
+        /// <param name="asigurare"></param>
+        /// <param name="connection"></param>
+        /// <returns></returns>
         public Response AddAsigurare(Asigurare asigurare, SqlConnection connection)
         {
             Response response = new Response();
@@ -397,7 +416,6 @@ namespace VehiDenceAPI.Models
 
             return response;
         }
-
         public Response DeleteAsigurare(Asigurare asigurare, SqlConnection connection)
         {
             Response response = new Response();
@@ -435,6 +453,7 @@ namespace VehiDenceAPI.Models
                     asi.DataCreare = Convert.ToDateTime(dt.Rows[i]["DataCreare"]);
                     asi.DataExpirare = Convert.ToDateTime(dt.Rows[i]["DataExpirare"]);
                     asi.Asigurator = Convert.ToString(dt.Rows[i]["Asigurator"]);
+                    asi.ImageData = dt.Rows[i]["ImageData"] as byte[];
                     list.Add(asi);
                 }
                 if (list.Count > 0)
@@ -508,23 +527,59 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
-
+        /// <summary>
+        /// Tot ce tine de Casco
+        /// </summary>
+        /// <param name="casco"></param>
+        /// <param name="connection"></param>
+        /// <returns></returns>
         public Response AddCasco(Casco casco, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("Insert into Casco (SerieSasiu,NrInmatriculare,DataCreare,DataExpirare,Asigurator) Values ('" + casco.SerieSasiu + "','" + casco.NrInmatriculare + "',GETDATE(),'" + casco.DataExpirare + "','" + casco.Asigurator + "')", connection);
-            connection.Open();
-            int i = cmd.ExecuteNonQuery();
-            connection.Close();
-            if (i > 0)
+            try
             {
-                response.StatusCode = 200;
-                response.StatusMessage = "Asigurare successful";
+                SqlCommand cmd = new SqlCommand("INSERT INTO Casco (SerieSasiu, NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData) VALUES (@SerieSasiu, @NrInmatriculare, GETDATE(), @DataExpirare, @Asigurator, @ImageData)", connection);
+
+                cmd.Parameters.AddWithValue("@SerieSasiu", casco.SerieSasiu);
+                cmd.Parameters.AddWithValue("@NrInmatriculare", casco.NrInmatriculare);
+                cmd.Parameters.AddWithValue("@DataExpirare", casco.DataExpirare);
+                cmd.Parameters.AddWithValue("@Asigurator", casco.Asigurator);
+                if (casco.ImageData != null)
+                {
+                    cmd.Parameters.Add("@ImageData", SqlDbType.VarBinary).Value = casco.ImageData;
+                }
+                else
+                {
+                    cmd.Parameters.Add("@ImageData", SqlDbType.VarBinary).Value = DBNull.Value;
+                }
+
+                connection.Open();
+                int i = cmd.ExecuteNonQuery();
+                connection.Close();
+
+                if (i > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Asigurare successful";
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Asigurare failed";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                response.StatusCode = 100;
-                response.StatusMessage = "Asigurare failed";
+                // Handle exception (e.g., log it)
+                response.StatusCode = 500;
+                response.StatusMessage = "An error occurred: " + ex.Message;
+            }
+            finally
+            {
+                if (connection.State == System.Data.ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
             return response;
         }
@@ -565,6 +620,7 @@ namespace VehiDenceAPI.Models
                     cas.DataCreare = Convert.ToDateTime(dt.Rows[i]["DataCreare"]);
                     cas.DataExpirare = Convert.ToDateTime(dt.Rows[i]["DataExpirare"]);
                     cas.Asigurator = Convert.ToString(dt.Rows[i]["Asigurator"]);
+                    cas.ImageData = dt.Rows[i]["ImageData"] as byte[];
                     list.Add(cas);
                 }
                 if (list.Count > 0)
@@ -589,7 +645,61 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
+        public Response VerificareExpirareCasco(SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlDataAdapter da = new SqlDataAdapter("SELECT distinct Users.Email, Users.Name  " +
+    "FROM Users  " +
+    "JOIN Masina  ON Users.username = Masina.Username " +
+    "JOIN Casco ON Masina.NrInmatriculare = Casco.NrInmatriculare " +
+    "WHERE DATEDIFF(day, GETDATE(), Casco.DataExpirare) <= 7;", connection);
 
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Users> list = new List<Users>();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+
+                    Users us = new Users();
+
+                    us.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                    us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+
+
+                    list.Add(us);
+                }
+                if (list.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Cascouri Expirate Gasite";
+                    response.listUsers = list;
+
+
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Nu au fost gasite Cascouri Expirate";
+                    response.listAsigurare = null;
+                }
+
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Nu au fost gasite Cascouri Expirate";
+                response.listAsigurare = null;
+            }
+            return response;
+        }
+        /// <summary>
+        /// Tot ce tine de ITP
+        /// </summary>
+        /// <param name="itp"></param>
+        /// <param name="connection"></param>
+        /// <returns></returns>
         public Response AddItp(ITP itp, SqlConnection connection)
         {
             Response response = new Response();
@@ -668,23 +778,108 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
-
-        public Response AddPermisConducere(PermisConducere permisConducere, SqlConnection connection)
+        public Response VerificareExpirareITP(SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("Insert into PermisConducere (Nume,username,DataCreare,DataExpirare,Categorie) Values ('" + permisConducere.Nume + "','" + permisConducere.username + "',GETDATE(),'" + permisConducere.DataExpirare + "','" + permisConducere.Categorie + "')", connection);
-            connection.Open();
-            int i = cmd.ExecuteNonQuery();
-            connection.Close();
-            if (i > 0)
+            SqlDataAdapter da = new SqlDataAdapter("SELECT distinct Users.Email, Users.Name  " +
+    "FROM Users  " +
+    "JOIN Masina  ON Users.username = Masina.Username " +
+    "JOIN ITP ON Masina.NrInmatriculare = ITP.NrInmatriculare " +
+    "WHERE DATEDIFF(day, GETDATE(), ITP.DataExpirare) <= 7;", connection);
+
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Users> list = new List<Users>();
+            if (dt.Rows.Count > 0)
             {
-                response.StatusCode = 200;
-                response.StatusMessage = "Carnet successful";
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+
+                    Users us = new Users();
+
+                    us.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                    us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+
+
+                    list.Add(us);
+                }
+                if (list.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "ITP-uri Expirate Gasite";
+                    response.listUsers = list;
+
+
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Nu au fost gasite ITP-uri Expirate";
+                    response.listAsigurare = null;
+                }
+
             }
             else
             {
                 response.StatusCode = 100;
-                response.StatusMessage = "Carnet failed";
+                response.StatusMessage = "Nu au fost gasite ITP-uri Expirate";
+                response.listAsigurare = null;
+            }
+            return response;
+        }
+        /// <summary>
+        /// Tot ce tine de Permis de Conducere
+        /// </summary>
+        /// <param name="permisConducere"></param>
+        /// <param name="connection"></param>
+        /// <returns></returns>
+        public Response AddPermisConducere(PermisConducere permisConducere, SqlConnection connection)
+        {
+            Response response = new Response();
+            try
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO PermisConducere (Nume, Username, DataCreare, DataExpirare, Categorie, ImageData) VALUES (@Nume, @Username, GETDATE(), @DataExpirare, @Categorie, @ImageData)", connection);
+
+                cmd.Parameters.AddWithValue("@Nume", permisConducere.Nume);
+                cmd.Parameters.AddWithValue("@Username", permisConducere.username);
+                cmd.Parameters.AddWithValue("@DataExpirare", permisConducere.DataExpirare);
+                cmd.Parameters.AddWithValue("@Categorie", permisConducere.Categorie);
+                if (permisConducere.ImageData != null)
+                {
+                    cmd.Parameters.Add("@ImageData", SqlDbType.VarBinary).Value = permisConducere.ImageData;
+                }
+                else
+                {
+                    cmd.Parameters.Add("@ImageData", SqlDbType.VarBinary).Value = DBNull.Value;
+                }
+
+                connection.Open();
+                int i = cmd.ExecuteNonQuery();
+                connection.Close();
+
+                if (i > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Carnet successful";
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Carnet failed";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception (e.g., log it)
+                response.StatusCode = 500;
+                response.StatusMessage = "An error occurred: " + ex.Message;
+            }
+            finally
+            {
+                if (connection.State == System.Data.ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
             return response;
         }
@@ -725,6 +920,7 @@ namespace VehiDenceAPI.Models
                     pc.DataCreare = Convert.ToDateTime(dt.Rows[i]["DataCreare"]);
                     pc.DataExpirare = Convert.ToDateTime(dt.Rows[i]["DataExpirare"]);
                     pc.Categorie = Convert.ToString(dt.Rows[i]["Categorie"]);
+                    pc.ImageData = dt.Rows[i]["ImageData"] as byte[];
                     list.Add(pc);
                 }
                 if (list.Count > 0)
@@ -749,7 +945,61 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
-        
+        public Response VerificareExpirarePermisConducere(SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlDataAdapter da = new SqlDataAdapter("SELECT distinct Users.Email, Users.Name  " +
+    "FROM Users  " +
+    "JOIN PermisConducere  ON Users.username = PermisConducere.Username " +
+    "WHERE DATEDIFF(day, GETDATE(), PermisConducere.DataExpirare) <= 7;", connection);
+
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Users> list = new List<Users>();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+
+                    Users us = new Users();
+
+                    us.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                    us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+
+
+                    list.Add(us);
+                }
+                if (list.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Permise Expirate Gasite";
+                    response.listUsers = list;
+
+
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Nu au fost gasite Permise Expirate";
+                    response.listAsigurare = null;
+                }
+
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Nu au fost gasite Permise Expirate";
+                response.listAsigurare = null;
+            }
+            return response;
+        }
+
+        /// <summary>
+        /// Tot ce tine de Revizie
+        /// </summary>
+        /// <param name="revizieService"></param>
+        /// <param name="connection"></param>
+        /// <returns></returns>
         public Response AddRevizieService(RevizieService revizieService, SqlConnection connection)
         {
             Response response = new Response();
@@ -829,23 +1079,58 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
-
+        /// <summary>
+        /// Tot ce tine Vigneta
+        /// </summary>
+        /// <param name="vigneta"></param>
+        /// <param name="connection"></param>
+        /// <returns></returns>
         public Response AddVigneta(Vigneta vigneta, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("Insert into Vigneta (NrInmatriculare,DataCreare,DataExpirare,Tara) Values ('" + vigneta.NrInmatriculare + "',GETDATE(),'" + vigneta.DataExpirare + "','"+vigneta.Tara+"')", connection);
-            connection.Open();
-            int i = cmd.ExecuteNonQuery();
-            connection.Close();
-            if (i > 0)
+            try
             {
-                response.StatusCode = 200;
-                response.StatusMessage = "Vigneta successful";
+                SqlCommand cmd = new SqlCommand("INSERT INTO Vigneta (NrInmatriculare, DataCreare, DataExpirare, Tara, ImageData) VALUES (@NrInmatriculare, GETDATE(), @DataExpirare, @Tara, @ImageData)", connection);
+
+                cmd.Parameters.AddWithValue("@NrInmatriculare", vigneta.NrInmatriculare);
+                cmd.Parameters.AddWithValue("@DataExpirare", vigneta.DataExpirare);
+                cmd.Parameters.AddWithValue("@Tara", vigneta.Tara);
+                if (vigneta.ImageData != null)
+                {
+                    cmd.Parameters.Add("@ImageData", SqlDbType.VarBinary).Value = vigneta.ImageData;
+                }
+                else
+                {
+                    cmd.Parameters.Add("@ImageData", SqlDbType.VarBinary).Value = DBNull.Value;
+                }
+
+                connection.Open();
+                int i = cmd.ExecuteNonQuery();
+                connection.Close();
+
+                if (i > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Vigneta successful";
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Vigneta failed";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                response.StatusCode = 100;
-                response.StatusMessage = "Vigneta failed";
+                // Handle exception (e.g., log it)
+                response.StatusCode = 500;
+                response.StatusMessage = "An error occurred: " + ex.Message;
+            }
+            finally
+            {
+                if (connection.State == System.Data.ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
             return response;
         }
@@ -885,6 +1170,7 @@ namespace VehiDenceAPI.Models
                     vi.DataCreare = Convert.ToDateTime(dt.Rows[i]["DataCreare"]);
                     vi.DataExpirare = Convert.ToDateTime(dt.Rows[i]["DataExpirare"]);
                     vi.Tara = Convert.ToString(dt.Rows[i]["DataExpirare"]);
+                    vi.ImageData = dt.Rows[i]["ImageData"] as byte[];
 
 
                     list.Add(vi);
@@ -911,6 +1197,56 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
+        public Response VerificareExpirareVigneta(SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlDataAdapter da = new SqlDataAdapter("SELECT distinct Users.Email, Users.Name  " +
+    "FROM Users  " +
+    "JOIN Masina  ON Users.username = Masina.Username " +
+    "JOIN Vigneta ON Masina.NrInmatriculare = Vigneta.NrInmatriculare " +
+    "WHERE DATEDIFF(day, GETDATE(), Vigneta.DataExpirare) <= 2;", connection);
+
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Users> list = new List<Users>();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+
+                    Users us = new Users();
+
+                    us.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                    us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+
+
+                    list.Add(us);
+                }
+                if (list.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Vignete Expirate Gasite";
+                    response.listUsers = list;
+
+
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Nu au fost gasite Vignete Expirate";
+                    response.listAsigurare = null;
+                }
+
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Nu au fost gasite Vignete Expirate";
+                response.listAsigurare = null;
+            }
+            return response;
+        }
+
 
 
 

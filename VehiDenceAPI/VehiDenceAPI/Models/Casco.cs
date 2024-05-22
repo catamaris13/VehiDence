@@ -1,4 +1,6 @@
-﻿namespace VehiDenceAPI.Models
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+namespace VehiDenceAPI.Models
 {
     public class Casco
     {
@@ -8,6 +10,7 @@
         public DateTime DataCreare { get; set; }
         public DateTime DataExpirare { get; set; }
         public string Asigurator { get; set; }
-        public byte[] ImageData { get; set; } = null;
+        [BindNever]
+        public byte[]? ImageData { get; set; }
     }
 }

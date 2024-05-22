@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using User.Management.Service.Services;
@@ -57,6 +58,44 @@ namespace VehiDenceAPI.Controllers
 
             return response;
 
+        }
+        [HttpPost]
+        [Route("SendExpirationReminder")]
+        public async Task<IActionResult> SendExpirationReminder()
+        {
+
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
+            Dal dal = new Dal();
+            response = dal.VerificareExpirareITP(connection);
+            RecurringJob.AddOrUpdate("Verificare ITP", () => SendExpirationReminder(), "0 0 * * *");
+            //Console.WriteLine(response.ToString());
+
+            if (response.StatusCode == 200)
+            {
+                string subject = "Expirare ITP";
+
+                foreach (Users user in response.listUsers)
+                {
+                    string message = $"Hi {user.Name}! " +
+                        $"Your ITP will expire in 7 days from now !" +
+                        $"Don't forget to get in touch with your service!";
+
+                    try
+                    {
+
+                        await _emailService.SendEmailAsync(user.Email, subject, message);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to send email: {ex.Message}");
+                    }
+
+                }
+                return StatusCode(200, "Email sent successful. Please check your email for resset instructions.");
+            }
+            return StatusCode(500, "Failed to send email");
         }
     }
 }

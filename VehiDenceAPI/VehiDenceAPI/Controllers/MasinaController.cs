@@ -46,7 +46,7 @@ namespace VehiDenceAPI.Controllers
             Masina masina = new Masina();
             masina.Username = username;
             response = dal.MasinaList(masina, connection);
-            
+
             return response;
 
         }

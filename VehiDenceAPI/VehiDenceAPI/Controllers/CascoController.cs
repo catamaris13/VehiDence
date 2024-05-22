@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using User.Management.Service.Services;
@@ -21,14 +22,24 @@ namespace VehiDenceAPI.Controllers
         [HttpPost]
         [Route("AddCasco")]
 
-        public Response AddCasco(Casco casco)
+        public Response AddCasco([FromForm] Casco casco,IFormFile? imageFile)
         {
             Response response = new Response();
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
             Dal dal = new Dal();
-            response = dal.AddCasco(casco, connection);
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    imageFile.CopyTo(ms);
+                    casco.ImageData = ms.ToArray();
+                }
+            }
 
+            response = dal.AddCasco(casco, connection);
             return response;
+
+            
         }
         [HttpDelete]
         [Route("DeleteCasco")]
@@ -55,6 +66,44 @@ namespace VehiDenceAPI.Controllers
 
             return response;
 
+        }
+        [HttpPost]
+        [Route("SendExpirationReminder")]
+        public async Task<IActionResult> SendExpirationReminder()
+        {
+
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
+            Dal dal = new Dal();
+            response = dal.VerificareExpirareCasco(connection);
+            RecurringJob.AddOrUpdate("Verificare Casco", () => SendExpirationReminder(), "0 0 * * *");
+            //Console.WriteLine(response.ToString());
+
+            if (response.StatusCode == 200)
+            {
+                string subject = "Expirare Casco";
+
+                foreach (Users user in response.listUsers)
+                {
+                    string message = $"Hi {user.Name}! " +
+                        $"Your Casco will expire in 7 days from now !" +
+                        $"Don't forget to get in touch with your inssurance company!";
+
+                    try
+                    {
+
+                        await _emailService.SendEmailAsync(user.Email, subject, message);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to send email: {ex.Message}");
+                    }
+
+                }
+                return StatusCode(200, "Email sent successful. Please check your email for resset instructions.");
+            }
+            return StatusCode(500, "Failed to send email");
         }
     }
 }

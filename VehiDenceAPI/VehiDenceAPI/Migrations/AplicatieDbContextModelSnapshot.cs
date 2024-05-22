@@ -41,7 +41,6 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("NrInmatriculare")
@@ -76,7 +75,6 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("NrInmatriculare")
@@ -124,7 +122,6 @@ namespace VehiDenceAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Marca")
@@ -171,7 +168,6 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Nume")
@@ -269,7 +265,6 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("NrInmatriculare")

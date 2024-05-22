@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Runtime.CompilerServices;
 
 namespace VehiDenceAPI.Models
 {
@@ -10,6 +11,7 @@ namespace VehiDenceAPI.Models
         public DateTime DataCreare { get; set; }
         public DateTime DataExpirare { get; set; }
         public string Categorie { get; set; }
-        public byte[] ImageData { get; set; } = null;
+        [BindNever]
+        public byte[]? ImageData { get; set; }
     }
 }
