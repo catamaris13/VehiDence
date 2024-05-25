@@ -41,14 +41,9 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("NrInmatriculare")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SerieSasiu")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -76,14 +71,9 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("NrInmatriculare")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SerieSasiu")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -124,7 +114,6 @@ namespace VehiDenceAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Marca")
@@ -171,7 +160,6 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Nume")
@@ -269,7 +257,6 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("NrInmatriculare")
