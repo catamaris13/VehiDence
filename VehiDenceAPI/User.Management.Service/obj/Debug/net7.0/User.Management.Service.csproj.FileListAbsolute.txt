@@ -36,16 +36,3 @@ C:/Users/catal/OneDrive/Desktop/II_PR/VehiDence/VehiDenceAPI/User.Management.Ser
 C:/Users/catal/OneDrive/Desktop/II_PR/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/refint/User.Management.Service.dll
 C:/Users/catal/OneDrive/Desktop/II_PR/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/User.Management.Service.pdb
 C:/Users/catal/OneDrive/Desktop/II_PR/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/ref/User.Management.Service.dll
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/bin/Debug/net7.0/User.Management.Service.deps.json
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/bin/Debug/net7.0/User.Management.Service.dll
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/bin/Debug/net7.0/User.Management.Service.pdb
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/User.Management.Service.csproj.AssemblyReference.cache
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/User.Management.Service.GeneratedMSBuildEditorConfig.editorconfig
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/User.Management.Service.AssemblyInfoInputs.cache
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/User.Management.Service.AssemblyInfo.cs
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/User.Management.Service.csproj.CoreCompileInputs.cache
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/User.Management.Service.sourcelink.json
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/User.Management.Service.dll
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/refint/User.Management.Service.dll
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/User.Management.Service.pdb
-/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/ref/User.Management.Service.dll
