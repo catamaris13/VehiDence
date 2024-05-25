@@ -370,9 +370,9 @@ namespace VehiDenceAPI.Models
             Response response = new Response();
             try
             {
-                SqlCommand cmd = new SqlCommand("Insert into Asigurare (SerieSasiu, NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData) Values (@SerieSasiu, @NrInmatriculare, GETDATE(), @DataExpirare, @Asigurator, @ImageData)", connection);
+                SqlCommand cmd = new SqlCommand("Insert into Asigurare ( NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData) Values ( @NrInmatriculare, GETDATE(), @DataExpirare, @Asigurator, @ImageData)", connection);
 
-                cmd.Parameters.AddWithValue("@SerieSasiu", asigurare.SerieSasiu);
+               
                 cmd.Parameters.AddWithValue("@NrInmatriculare", asigurare.NrInmatriculare);
                 cmd.Parameters.AddWithValue("@DataExpirare", asigurare.DataExpirare);
                 cmd.Parameters.AddWithValue("@Asigurator", asigurare.Asigurator);
@@ -448,7 +448,6 @@ namespace VehiDenceAPI.Models
                 {
                     Asigurare asi = new Asigurare();
                     asi.Id = Convert.ToInt32(dt.Rows[i]["Id"]);
-                    asi.SerieSasiu = Convert.ToString(dt.Rows[i]["SerieSasiu"]);
                     asi.NrInmatriculare = Convert.ToString(dt.Rows[i]["NrInmatriculare"]);
                     asi.DataCreare = Convert.ToDateTime(dt.Rows[i]["DataCreare"]);
                     asi.DataExpirare = Convert.ToDateTime(dt.Rows[i]["DataExpirare"]);
@@ -538,9 +537,9 @@ namespace VehiDenceAPI.Models
             Response response = new Response();
             try
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO Casco (SerieSasiu, NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData) VALUES (@SerieSasiu, @NrInmatriculare, GETDATE(), @DataExpirare, @Asigurator, @ImageData)", connection);
+                SqlCommand cmd = new SqlCommand("INSERT INTO Casco ( NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData) VALUES ( @NrInmatriculare, GETDATE(), @DataExpirare, @Asigurator, @ImageData)", connection);
 
-                cmd.Parameters.AddWithValue("@SerieSasiu", casco.SerieSasiu);
+                
                 cmd.Parameters.AddWithValue("@NrInmatriculare", casco.NrInmatriculare);
                 cmd.Parameters.AddWithValue("@DataExpirare", casco.DataExpirare);
                 cmd.Parameters.AddWithValue("@Asigurator", casco.Asigurator);
@@ -615,7 +614,7 @@ namespace VehiDenceAPI.Models
                 {
                     Casco cas = new Casco();
                     cas.Id = Convert.ToInt32(dt.Rows[i]["Id"]);
-                    cas.SerieSasiu = Convert.ToString(dt.Rows[i]["SerieSasiu"]);
+                    
                     cas.NrInmatriculare = Convert.ToString(dt.Rows[i]["NrInmatriculare"]);
                     cas.DataCreare = Convert.ToDateTime(dt.Rows[i]["DataCreare"]);
                     cas.DataExpirare = Convert.ToDateTime(dt.Rows[i]["DataExpirare"]);

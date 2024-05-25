@@ -47,10 +47,6 @@ namespace VehiDenceAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SerieSasiu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Asigurare");
@@ -78,10 +74,6 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("NrInmatriculare")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SerieSasiu")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
