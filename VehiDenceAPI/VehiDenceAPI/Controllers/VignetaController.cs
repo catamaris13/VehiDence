@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using User.Management.Service.Services;
@@ -21,15 +22,21 @@ namespace VehiDenceAPI.Controllers
         [HttpPost]
         [Route("AddVigneta")]
 
-        public Response AddVigneta(Vigneta vigneta)
+        public Response AddVigneta([FromForm] Vigneta vigneta, IFormFile? imageFile)
         {
             Response response = new Response();
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
             Dal dal = new Dal();
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    imageFile.CopyTo(ms);
+                    vigneta.ImageData = ms.ToArray();
+                }
+            }
+
             response = dal.AddVigneta(vigneta, connection);
-
-
-
             return response;
         }
         [HttpDelete]
@@ -57,6 +64,44 @@ namespace VehiDenceAPI.Controllers
 
             return response;
 
+        }
+        [HttpPost]
+        [Route("SendExpirationReminder")]
+        public async Task<IActionResult> SendExpirationReminder()
+        {
+
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
+            Dal dal = new Dal();
+            response = dal.VerificareExpirareVigneta(connection);
+            RecurringJob.AddOrUpdate("Verificare Vigneta", () => SendExpirationReminder(), "0 0 * * *");
+            //Console.WriteLine(response.ToString());
+
+            if (response.StatusCode == 200)
+            {
+                string subject = "Expirare Vigneta";
+
+                foreach (Users user in response.listUsers)
+                {
+                    string message = $"Hi {user.Name}! " +
+                        $"Your Vigneta will expire in 7 days from now !" +
+                        $"Don't forget to renew it!";
+
+                    try
+                    {
+
+                        await _emailService.SendEmailAsync(user.Email, subject, message);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to send email: {ex.Message}");
+                    }
+
+                }
+                return StatusCode(200, "Email sent successful. Please check your email for resset instructions.");
+            }
+            return StatusCode(500, "Failed to send email");
         }
     }
 }
