@@ -210,6 +210,9 @@ const Home = () => {
           <li style={{ "--delay": 4 }}>
             <a href="new_vignette">Vignette</a>
           </li>
+          <li style={{ "--delay": 4 }}>
+            <a href="new_service">Car Service</a>
+          </li>
         </ul>
       </div>
 
