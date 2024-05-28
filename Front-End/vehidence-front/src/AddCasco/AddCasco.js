@@ -71,7 +71,7 @@ const AddCasco = () => {
       );
       console.log(response.data);
 
-      if (response.status === 200) {
+      if (response.data.statusCode === 200) {
         navigate("/home");
       } else {
         alert("Casco was not added...");

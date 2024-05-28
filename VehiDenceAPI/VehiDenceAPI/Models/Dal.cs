@@ -745,10 +745,17 @@ namespace VehiDenceAPI.Models
         public Response AddItp(ITP itp, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("Insert into ITP (NrInmatriculare,DataCreare,DataExpirare) Values ('" + itp.NrInmatriculare + "','"+itp.DataCreare+"','" + itp.DataExpirare + "')", connection);
+            SqlCommand cmd = new SqlCommand("INSERT INTO ITP (NrInmatriculare, DataCreare, DataExpirare) VALUES (@NrInmatriculare, @DataCreare, @DataExpirare)", connection);
+    
+            // Add parameters to the command before executing it
+            cmd.Parameters.AddWithValue("@NrInmatriculare", itp.NrInmatriculare);
+            cmd.Parameters.AddWithValue("@DataCreare", itp.DataCreare);
+            cmd.Parameters.AddWithValue("@DataExpirare", itp.DataExpirare);
+    
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();
+
             if (i > 0)
             {
                 response.StatusCode = 200;
@@ -759,8 +766,10 @@ namespace VehiDenceAPI.Models
                 response.StatusCode = 100;
                 response.StatusMessage = "ITP failed";
             }
+    
             return response;
         }
+
         public Response DeleteITP(ITP itp, SqlConnection connection)
         {
             Response response = new Response();

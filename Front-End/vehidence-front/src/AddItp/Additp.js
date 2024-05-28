@@ -42,30 +42,41 @@ const AddItp = () => {
 
     const formatDate = (date) => date.toISOString();
 
-    const itp = {
+    const itpp = {
       NrInmatriculare: nrInmatriculare,
       DataCreare: formatDate(dataCreare),
       DataExpirare: formatDate(dataExpirare),
     };
 
-    console.log(formatDate(dataCreare))
+    const itp = new FormData();
+    itp.append("NrInmatriculare", nrInmatriculare);
+    itp.append("DataCreare", formatDate(dataCreare));
+    itp.append("DataExpirare", formatDate(dataExpirare));   
     
-    
-      const url = "http://localhost:5277/api/ITP/AddItp"
-      axios.post(url,itp)
-      .then((response) => {
-        if(response.data.statusCode == 200){
-          navigate("/home");
-        }
-        else{
-         alert("ITP was not added")
-        }
-      })
-    .catch((error) => {
-      console.log("Adding Itp failed ",error);
-      alert("Itp was not added")
-    });
+    const url = "http://localhost:5277/api/ITP/AddItp"
 
+
+    try{
+      const response = await axios.post(url,itp,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response.data);
+      if(response.data.statusCode == 200){
+        navigate("/home");
+      }
+      else{
+        alert("Itp was not added");
+      }
+    }
+    catch(error){
+      alert("Itp was not added");
+      console.log("Eroare la itp",error)
+    }
+    
   };
 
   if (login) {
