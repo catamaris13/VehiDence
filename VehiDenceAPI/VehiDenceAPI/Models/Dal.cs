@@ -295,7 +295,51 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
-        public Response MasinaList(Masina masina, SqlConnection connetion)
+        public Response MasinaListId(Masina masina, SqlConnection connetion)
+        {
+            Response response = new Response();
+            SqlDataAdapter da = new SqlDataAdapter("select * from Masina where Id='" + masina.Id + "'", connetion);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Masina> list = new List<Masina>();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Masina ma = new Masina();
+                    ma.Id = Convert.ToInt32(dt.Rows[i]["Id"]);
+                    ma.SerieSasiu = Convert.ToString(dt.Rows[i]["SerieSasiu"]);
+                    ma.NrInmatriculare = Convert.ToString(dt.Rows[i]["NrInmatriculare"]);
+                    ma.Marca = Convert.ToString(dt.Rows[i]["Marca"]);
+                    ma.Model = Convert.ToString(dt.Rows[i]["Model"]);
+                    ma.Username = Convert.ToString(dt.Rows[i]["Username"]);
+                    ma.ImageData = dt.Rows[i]["ImageData"] as byte[];
+
+                    list.Add(ma);
+                }
+                if (list.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Masini Gasite";
+                    response.listMasina = list;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Nu au fost gasite msini";
+                    response.listMasina = null;
+                }
+
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Nu au fost gasite msini";
+                response.listMasina = null;
+            }
+            return response;
+        }
+        public Response MasinaListUsername(Masina masina, SqlConnection connetion)
         {
             Response response = new Response();
             SqlDataAdapter da = new SqlDataAdapter("select * from Masina where username='" + masina.Username + "'", connetion);
@@ -369,9 +413,9 @@ namespace VehiDenceAPI.Models
             Response response = new Response();
             try
             {
-                SqlCommand cmd = new SqlCommand("Insert into Asigurare ( NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData) Values ( @NrInmatriculare, GETDATE(), @DataExpirare, @Asigurator, @ImageData)", connection);
+                SqlCommand cmd = new SqlCommand("Insert into Asigurare ( NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData) Values ( @NrInmatriculare, @DataCreare, @DataExpirare, @Asigurator, @ImageData)", connection);
 
-               
+                cmd.Parameters.AddWithValue("@DataCreare", asigurare.DataCreare);
                 cmd.Parameters.AddWithValue("@NrInmatriculare", asigurare.NrInmatriculare);
                 cmd.Parameters.AddWithValue("@DataExpirare", asigurare.DataExpirare);
                 cmd.Parameters.AddWithValue("@Asigurator", asigurare.Asigurator);
@@ -536,9 +580,9 @@ namespace VehiDenceAPI.Models
             Response response = new Response();
             try
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO Casco ( NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData) VALUES ( @NrInmatriculare, GETDATE(), @DataExpirare, @Asigurator, @ImageData)", connection);
+                SqlCommand cmd = new SqlCommand("INSERT INTO Casco ( NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData) VALUES ( @NrInmatriculare, @DataCreare, @DataExpirare, @Asigurator, @ImageData)", connection);
 
-                
+                cmd.Parameters.AddWithValue("@DataCreare", casco.DataCreare);
                 cmd.Parameters.AddWithValue("@NrInmatriculare", casco.NrInmatriculare);
                 cmd.Parameters.AddWithValue("@DataExpirare", casco.DataExpirare);
                 cmd.Parameters.AddWithValue("@Asigurator", casco.Asigurator);
@@ -701,7 +745,7 @@ namespace VehiDenceAPI.Models
         public Response AddItp(ITP itp, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("Insert into ITP (NrInmatriculare,DataCreare,DataExpirare) Values ('" + itp.NrInmatriculare + "',GETDATE(),'" + itp.DataExpirare + "')", connection);
+            SqlCommand cmd = new SqlCommand("Insert into ITP (NrInmatriculare,DataCreare,DataExpirare) Values ('" + itp.NrInmatriculare + "','"+itp.DataCreare+"','" + itp.DataExpirare + "')", connection);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();
@@ -836,8 +880,9 @@ namespace VehiDenceAPI.Models
             Response response = new Response();
             try
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO PermisConducere (Nume, Username, DataCreare, DataExpirare, Categorie, ImageData) VALUES (@Nume, @Username, GETDATE(), @DataExpirare, @Categorie, @ImageData)", connection);
+                SqlCommand cmd = new SqlCommand("INSERT INTO PermisConducere (Nume, Username, DataCreare, DataExpirare, Categorie, ImageData) VALUES (@Nume, @Username, @DataCreare, @DataExpirare, @Categorie, @ImageData)", connection);
 
+                cmd.Parameters.AddWithValue("@DataCreare", permisConducere.DataCreare);
                 cmd.Parameters.AddWithValue("@Nume", permisConducere.Nume);
                 cmd.Parameters.AddWithValue("@Username", permisConducere.username);
                 cmd.Parameters.AddWithValue("@DataExpirare", permisConducere.DataExpirare);
@@ -1088,8 +1133,9 @@ namespace VehiDenceAPI.Models
             Response response = new Response();
             try
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO Vigneta (NrInmatriculare, DataCreare, DataExpirare, Tara, ImageData) VALUES (@NrInmatriculare, GETDATE(), @DataExpirare, @Tara, @ImageData)", connection);
+                SqlCommand cmd = new SqlCommand("INSERT INTO Vigneta (NrInmatriculare, DataCreare, DataExpirare, Tara, ImageData) VALUES (@NrInmatriculare, @DataCreare, @DataExpirare, @Tara, @ImageData)", connection);
 
+                cmd.Parameters.AddWithValue("@DataCreare", vigneta.DataCreare);
                 cmd.Parameters.AddWithValue("@NrInmatriculare", vigneta.NrInmatriculare);
                 cmd.Parameters.AddWithValue("@DataExpirare", vigneta.DataExpirare);
                 cmd.Parameters.AddWithValue("@Tara", vigneta.Tara);

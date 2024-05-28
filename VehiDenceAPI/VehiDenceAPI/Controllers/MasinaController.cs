@@ -38,14 +38,28 @@ namespace VehiDenceAPI.Controllers
 
         [HttpGet]
         [Route("MasinaList/{username}")]
-        public Response MasinaList(string username)
+        public Response MasinaListUsername(string username)
         {
             Response response = new Response();
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
             Dal dal = new Dal();
             Masina masina = new Masina();
             masina.Username = username;
-            response = dal.MasinaList(masina, connection);
+            response = dal.MasinaListUsername(masina, connection);
+
+            return response;
+
+        }
+        [HttpGet]
+        [Route("MasinaList/{id}")]
+        public Response MasinaListId(int id)
+        {
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
+            Dal dal = new Dal();
+            Masina masina = new Masina();
+            masina.Id = id;
+            response = dal.MasinaListId(masina, connection);
 
             return response;
 
