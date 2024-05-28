@@ -69,7 +69,7 @@ const Home = () => {
       try {
         if (username) {
           const response = await axios.get(
-            `http://localhost:5277/api/Masina/MasinaList/${username}`
+            "http://localhost:5277/api/Masina/MasinaList/" + username
           );
           setMasini(response.data.listMasina);
         }
@@ -88,30 +88,30 @@ const Home = () => {
 
     return masini.map((masina, index) => {
       const imageSrc = masina.imageData
-        ? `data:image/jpeg;base64,${masina.imageData}`
+        ? "data:image/jpeg;base64," + masina.imageData
         : "";
 
       return (
-        <div className="card" key={index}>
-          <img
-            src={imageSrc}
-            className="card-img-top"
-            alt={masina.marca}
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = "placeholder.jpg";
-            }}
-          />
-          <div className="card-body">
-            <h5 className="card-title">
-              {masina.marca} {masina.model}
-            </h5>
-            <p className="card-text">
-              Nr. Inmatriculare: {masina.nrInmatriculare}
-            </p>
-            <p className="card-text">Serie Sasiu: {masina.serieSasiu}</p>
+        <Link to={"/car/" + masina.id} key={index} className="card-link">
+          <div className="card">
+            <img
+              src={imageSrc}
+              className="card-img-top"
+              alt={masina.marca}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "placeholder.jpg";
+              }}
+            />
+            <div className="card-body">
+              <h5 className="card-title">
+                {masina.marca} {masina.model}
+              </h5>
+              <p className="card-text">Registration number: {masina.nrInmatriculare}</p>
+              <p className="card-text">Car chassis number: {masina.serieSasiu}</p>
+            </div>
           </div>
-        </div>
+        </Link>
       );
     });
   };
