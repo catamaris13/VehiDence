@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./AddMasina.css";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 const AddMasina = () => {
   const [serieSasiu, setSerieSasiu] = useState("");
@@ -145,10 +146,7 @@ const AddMasina = () => {
     );
   } else {
     return (
-      <div className="text">
-        <h1>Page not found</h1>
-        <h2>Error 404</h2>
-      </div>
+      <ErrorPage/>
     );
   }
 };

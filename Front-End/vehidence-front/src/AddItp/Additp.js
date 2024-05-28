@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./addItp.css"
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 const AddItp = () => {
   const [nrInmatriculare, setNrInmatriculare] = useState("");
@@ -110,10 +111,7 @@ const AddItp = () => {
     );
   } else {
     return (
-      <div className="text">
-        <h1>Page not found</h1>
-        <h2>Error 404</h2>
-      </div>
+      <ErrorPage/>
     );
   }
 };

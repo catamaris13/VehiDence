@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using VehiDenceAPI.Models;
@@ -7,7 +8,7 @@ namespace VehiDenceAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MasinaController : ControllerBase
+    public class  MasinaController : ControllerBase
     {
         private readonly IConfiguration _configuration;
 
@@ -51,7 +52,7 @@ namespace VehiDenceAPI.Controllers
 
         }
         [HttpGet]
-        [Route("MasinaList/{id}")]
+        [Route("MasinaList/{id:int}")]
         public Response MasinaListId(int id)
         {
             Response response = new Response();

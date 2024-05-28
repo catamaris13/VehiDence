@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./addPermis.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 
 const AddPermis = () => {
@@ -166,10 +167,7 @@ const AddPermis = () => {
     );
   } else {
     return (
-      <div className="text">
-        <h1>Page not found</h1>
-        <h2>Error 404</h2>
-      </div>
+      <ErrorPage/>
     );
   }
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios, { all } from "axios";
 import { useNavigate } from "react-router-dom";
-
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 const Servis = () => {
   const [serieSasiu, setSerieSasiu] = useState("");
@@ -94,10 +94,7 @@ const Servis = () => {
     );
   } else {
     return (
-      <div className="text">
-        <h1>Page not found</h1>
-        <h2>Error 404</h2>
-      </div>
+      <ErrorPage/>
     );
   }
 };

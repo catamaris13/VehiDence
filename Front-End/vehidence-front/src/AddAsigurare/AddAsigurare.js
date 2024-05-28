@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./addAsigurare.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 const AddAsigurare = () => {
   const [nrInmatriculare, setNrInmatriculare] = useState("");
@@ -142,10 +143,7 @@ const AddAsigurare = () => {
     );
   } else {
     return (
-      <div className="text">
-        <h1>Page not found</h1>
-        <h2>Error 404</h2>
-      </div>
+      <ErrorPage/>
     );
   }
 };

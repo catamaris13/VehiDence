@@ -69,7 +69,7 @@ const Home = () => {
       try {
         if (username) {
           const response = await axios.get(
-            "http://localhost:5277/api/Masina/MasinaList/" + username
+            `http://localhost:5277/api/Masina/MasinaList/${username}`
           );
           setMasini(response.data.listMasina);
         }

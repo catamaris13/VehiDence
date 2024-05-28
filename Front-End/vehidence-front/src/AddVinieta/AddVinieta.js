@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./addVinieta.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 const AddVinieta = () => {
   const [tara, setTara] = useState("");
@@ -143,10 +144,7 @@ const AddVinieta = () => {
     );
   } else {
     return (
-      <div className="text">
-        <h1>Page not found</h1>
-        <h2>Error 404</h2>
-      </div>
+      <ErrorPage/>
     );
   }
 };
