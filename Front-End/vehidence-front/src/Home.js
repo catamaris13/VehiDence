@@ -196,16 +196,19 @@ const Home = () => {
             <a href="/new_car">Add Car</a>
           </li>
           <li style={{ "--delay": 2 }}>
-            <a href="#">Casco</a>
+            <a href="/new_casco">Casco</a>
           </li>
           <li style={{ "--delay": 3 }}>
-            <a href="#">ITP</a>
+            <a href="/new_itp">ITP</a>
           </li>
           <li style={{ "--delay": 4 }}>
-            <a href="#">Insurance</a>
+            <a href="new_insurance">Insurance</a>
           </li>
           <li style={{ "--delay": 4 }}>
-            <a href="#">Driver license</a>
+            <a href="new_driver_license">Driver license</a>
+          </li>
+          <li style={{ "--delay": 4 }}>
+            <a href="new_vignette">Vignette</a>
           </li>
         </ul>
       </div>

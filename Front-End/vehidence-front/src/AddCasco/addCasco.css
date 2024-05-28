@@ -1,0 +1,119 @@
+/* Adaugă aceste stiluri în fișierul addCasco.css */
+
+/* Stiluri pentru calendar */
+.react-datepicker {
+    font-family: "Inter", sans-serif; /* Folosește fontul Inter */
+  }
+  
+  .react-datepicker-wrapper {
+    display: inline-block;
+  }
+  
+  .react-datepicker__input-container {
+    width: 100%;
+  }
+  
+  .react-datepicker__input-container input {
+    width: 100%;
+    height: 40px;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  
+  /* Stiluri pentru săgeți */
+  .react-datepicker__navigation {
+    top: 12px;
+  }
+  
+  .react-datepicker__navigation--previous {
+    left: 12px;
+  }
+  
+  .react-datepicker__navigation--next {
+    right: 12px;
+  }
+  
+  /* Stiluri pentru data calendarului */
+  .react-datepicker__day {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .react-datepicker__day--in-range {
+    background-color: #008FFD;
+    color: #fff;
+  }
+  
+  .react-datepicker__day--keyboard-selected,
+  .react-datepicker__day--selected {
+    background-color: #CBE8FF;
+    color: #008FFD;
+  }
+  
+  .react-datepicker__day--today {
+    background-color: #FDFDFD;
+    color: #1F1F25;
+  }
+  .datepickers-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+  }
+  .datepicker-container{
+    margin-right: 55px;
+    margin-left: 46px;
+    margin-top: 35px;
+  }
+  
+ .datepicker-container label{
+    color: #3c009d;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+    
+ }
+
+ .button-container-add-casco{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    position: relative;
+  }
+
+  .button-new-casco{
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    background-color: #3c009d;
+    color: #f8f8f8;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    margin-top: 30px;
+    font-size: 17px;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  .button-new-casco:hover {
+    background-color: #000000; /* Darker shade of the original color */
+}
+
+ 
+  
