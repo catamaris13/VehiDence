@@ -56,9 +56,11 @@
 
 .card {
     width: 300px;
+    height: 350px;
     margin: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
+
 }
 
 @media (max-width: 768px) {
@@ -154,4 +156,8 @@
   justify-content: center;
   align-items: center;
   margin-left: 60px;
+}
+.card-link {
+  text-decoration: none;
+  color: inherit;
 }

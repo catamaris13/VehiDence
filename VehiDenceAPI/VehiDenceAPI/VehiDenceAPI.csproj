@@ -21,4 +21,11 @@
     <ProjectReference Include="..\User.Management.Service\User.Management.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20240521143654_ceva.cs" />
+    <Compile Remove="Migrations\20240521143654_ceva.Designer.cs" />
+    <Compile Remove="Migrations\20240429080033_NrInmatriculare.cs" />
+    <Compile Remove="Migrations\20240429080033_NrInmatriculare.Designer.cs" />
+  </ItemGroup>
+
 </Project>

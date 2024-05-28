@@ -42,6 +42,8 @@ import AddItp from './AddItp/Additp';
 import AddAsigurare from './AddAsigurare/AddAsigurare';
 import AddPermis from './AddPermis/AddPermis';
 import AddVinieta from './AddVinieta/AddVinieta';
+import Servis from './Servis/Servis';
+import CarInfo from './CarInfo/CarInfo';
 
 function App() {
 
@@ -62,6 +64,8 @@ function App() {
             <Route path='/new_insurance' element = {<AddAsigurare/>}/>
             <Route path='/new_driver_license' element = {<AddPermis/>}/>
             <Route path='/new_vignette' element = {<AddVinieta/>}/>
+            <Route path='/new_service' element = {<Servis/>}/>
+            <Route path='/car/:id' element={<CarInfo />}/>
             <Route path='*' element={<Home />} />
           </Routes>
         </Router>

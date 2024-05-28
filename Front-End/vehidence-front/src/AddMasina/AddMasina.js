@@ -47,7 +47,7 @@ const AddMasina = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const masina = new FormData();
     masina.append("SerieSasiu", serieSasiu);
     masina.append("NrInmatriculare", nrInmatriculare);
