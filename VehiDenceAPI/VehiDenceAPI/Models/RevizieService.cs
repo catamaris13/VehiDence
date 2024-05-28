@@ -8,5 +8,7 @@
         public int KmUltim {  get; set; }
         public int KmExpirare { get; set; }
         public string ServiceName { get; set; }
+        public int IsValid { get; set; }
+
     }
 }

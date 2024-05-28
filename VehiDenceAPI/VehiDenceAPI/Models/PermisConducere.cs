@@ -10,6 +10,8 @@ namespace VehiDenceAPI.Models
         public string username { get; set; }    
         public DateTime DataCreare { get; set; }
         public DateTime DataExpirare { get; set; }
+        public int IsValid { get; set; }
+
         public string Categorie { get; set; }
         [BindNever]
         public byte[]? ImageData { get; set; }
