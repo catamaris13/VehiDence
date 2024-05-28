@@ -22,7 +22,7 @@ namespace VehiDenceAPI.Controllers
         [HttpPost]
         [Route("AddItp")]
 
-        public Response AddItp(ITP itp)
+        public Response AddItp([FromForm] ITP itp)
         {
             Response response = new Response();
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
