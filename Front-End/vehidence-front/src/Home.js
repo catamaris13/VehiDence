@@ -81,10 +81,8 @@ const Home = () => {
     fetchData();
   }, [username]);
 
+
   const mapMasiniToCards = () => {
-    if (!masini || masini.length === 0) {
-      return <h1 className="text">Nu aveti masini...</h1>;
-    }
 
     return masini.map((masina, index) => {
       const imageSrc = masina.imageData
@@ -107,8 +105,12 @@ const Home = () => {
               <h5 className="card-title">
                 {masina.marca} {masina.model}
               </h5>
-              <p className="card-text">Registration number: {masina.nrInmatriculare}</p>
-              <p className="card-text">Car chassis number: {masina.serieSasiu}</p>
+              <p className="card-text">
+                Registration number: {masina.nrInmatriculare}
+              </p>
+              <p className="card-text">
+                Car chassis number: {masina.serieSasiu}
+              </p>
             </div>
           </div>
         </Link>
@@ -163,64 +165,121 @@ const Home = () => {
         </nav>
       </div>
     );
-  }
+  } else {
+    if (!masini || masini.length === 0) {
+      return (
+        <div className="home">
+          <nav className="navbar">
+            <h1>Vehi Dence</h1>
+            <div className="links">
+              <Link
+                to={destination}
+                style={{
+                  color: "white",
+                  backgroundColor: "#3c009d",
+                  borderRadius: "10px",
+                  padding: "8px 20px",
+                  marginLeft: "20px",
+                  marginRight: "40px",
+                }}
+              >
+                My account
+              </Link>
+            </div>
+          </nav>
+          <h1 className="text">No cars...</h1>
+          <div className="dropdown">
+            <button className="dropdown-btn">
+              <span>New +</span>
+              <span className="arrow"></span>
+            </button>
+            <ul className="dropdown-content">
+              <li style={{ "--delay": 1 }}>
+                <a href="/new_car">Add Car</a>
+              </li>
+              <li style={{ "--delay": 2 }}>
+                <a href="/new_casco">Casco</a>
+              </li>
+              <li style={{ "--delay": 3 }}>
+                <a href="/new_itp">ITP</a>
+              </li>
+              <li style={{ "--delay": 4 }}>
+                <a href="new_insurance">Insurance</a>
+              </li>
+              <li style={{ "--delay": 4 }}>
+                <a href="new_driver_license">Driver license</a>
+              </li>
+              <li style={{ "--delay": 4 }}>
+                <a href="new_vignette">Vignette</a>
+              </li>
+              <li style={{ "--delay": 4 }}>
+                <a href="new_service">Car Service</a>
+              </li>
+            </ul>
+          </div>
+          </div>
+        
+      );
+    }
+    return(
+      <div className="home">
+          <nav className="navbar">
+            <h1>Vehi Dence</h1>
+            <div className="links">
+              <Link
+                to={destination}
+                style={{
+                  color: "white",
+                  backgroundColor: "#3c009d",
+                  borderRadius: "10px",
+                  padding: "8px 20px",
+                  marginLeft: "20px",
+                  marginRight: "40px",
+                }}
+              >
+                My account
+              </Link>
+            </div>
+          </nav>
 
-  return (
-    <div className="home">
-      <nav className="navbar">
-        <h1>Vehi Dence</h1>
-        <div className="links">
-          <Link
-            to={destination}
-            style={{
-              color: "white",
-              backgroundColor: "#3c009d",
-              borderRadius: "10px",
-              padding: "8px 20px",
-              marginLeft: "20px",
-              marginRight: "40px",
-            }}
+          <div className="dropdown">
+            <button className="dropdown-btn">
+              <span>New +</span>
+              <span className="arrow"></span>
+            </button>
+            <ul className="dropdown-content">
+              <li style={{ "--delay": 1 }}>
+                <a href="/new_car">Add Car</a>
+              </li>
+              <li style={{ "--delay": 2 }}>
+                <a href="/new_casco">Casco</a>
+              </li>
+              <li style={{ "--delay": 3 }}>
+                <a href="/new_itp">ITP</a>
+              </li>
+              <li style={{ "--delay": 4 }}>
+                <a href="new_insurance">Insurance</a>
+              </li>
+              <li style={{ "--delay": 4 }}>
+                <a href="new_driver_license">Driver license</a>
+              </li>
+              <li style={{ "--delay": 4 }}>
+                <a href="new_vignette">Vignette</a>
+              </li>
+              <li style={{ "--delay": 4 }}>
+                <a href="new_service">Car Service</a>
+              </li>
+            </ul>
+          </div>
+
+          <div
+            className={`card-container ${displayHorizontal ? "" : "vertical"}`}
           >
-            My account
-          </Link>
+            {mapMasiniToCards()}
+          </div>
         </div>
-      </nav>
-
-      <div className="dropdown">
-        <button className="dropdown-btn">
-          <span>New +</span>
-          <span className="arrow"></span>
-        </button>
-        <ul className="dropdown-content">
-          <li style={{ "--delay": 1 }}>
-            <a href="/new_car">Add Car</a>
-          </li>
-          <li style={{ "--delay": 2 }}>
-            <a href="/new_casco">Casco</a>
-          </li>
-          <li style={{ "--delay": 3 }}>
-            <a href="/new_itp">ITP</a>
-          </li>
-          <li style={{ "--delay": 4 }}>
-            <a href="new_insurance">Insurance</a>
-          </li>
-          <li style={{ "--delay": 4 }}>
-            <a href="new_driver_license">Driver license</a>
-          </li>
-          <li style={{ "--delay": 4 }}>
-            <a href="new_vignette">Vignette</a>
-          </li>
-          <li style={{ "--delay": 4 }}>
-            <a href="new_service">Car Service</a>
-          </li>
-        </ul>
-      </div>
-
-      <div className={`card-container ${displayHorizontal ? "" : "vertical"}`}>
-        {mapMasiniToCards()}
-      </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Home;
