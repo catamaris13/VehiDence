@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Xcz2GF4hWSR7YxhMksj4nm9aruJV/a4B6ypr9iNKiU8wGnFFh5Uuw+9J068FGcaB0ZcgUDE66dxiTjOJdfgz4g==",
+  "dgSpecHash": "BesTVT4wW/9d7sKNDY0zkecGj89pp8uSMAOm+yRjONLMMAjMyOhguuwR38LFEDV9JbwZESYWaySZeGgs9GDjUw==",
   "success": true,
   "projectFilePath": "/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/User.Management.Service.csproj",
   "expectedPackageFiles": [
+    "/Users/sasamezo/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",
     "/Users/sasamezo/.nuget/packages/hangfire/1.8.12/hangfire.1.8.12.nupkg.sha512",
     "/Users/sasamezo/.nuget/packages/hangfire.aspnetcore/1.8.12/hangfire.aspnetcore.1.8.12.nupkg.sha512",
     "/Users/sasamezo/.nuget/packages/hangfire.core/1.8.12/hangfire.core.1.8.12.nupkg.sha512",
@@ -27,5 +28,12 @@
     "/Users/sasamezo/.nuget/packages/microsoft.netcore.app.ref/7.0.15/microsoft.netcore.app.ref.7.0.15.nupkg.sha512",
     "/Users/sasamezo/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.15/microsoft.aspnetcore.app.ref.7.0.15.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

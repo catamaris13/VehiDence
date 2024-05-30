@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "legiZa2sv4C3eZf7CPSN3ZlNVbLOXPecAnfD6dh4+6dF8CVD7mxJvS1p+bY1E27QFqPNDPWv2dUFVlbqidNUcQ==",
+  "dgSpecHash": "arP169ae1BWpOpRTB1+K/u2/Bk+UnHl3g1LThGLYtDLYpPCB8HJdCSvotNz1WuAv2c3f8cyMJj+o9tmIXyT9pw==",
   "success": true,
   "projectFilePath": "/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/VehiDenceAPI.csproj",
   "expectedPackageFiles": [
     "/Users/sasamezo/.nuget/packages/azure.core/1.24.0/azure.core.1.24.0.nupkg.sha512",
     "/Users/sasamezo/.nuget/packages/azure.identity/1.6.0/azure.identity.1.6.0.nupkg.sha512",
+    "/Users/sasamezo/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",
     "/Users/sasamezo/.nuget/packages/hangfire/1.8.12/hangfire.1.8.12.nupkg.sha512",
     "/Users/sasamezo/.nuget/packages/hangfire.aspnetcore/1.8.12/hangfire.aspnetcore.1.8.12.nupkg.sha512",
     "/Users/sasamezo/.nuget/packages/hangfire.core/1.8.12/hangfire.core.1.8.12.nupkg.sha512",
@@ -92,5 +93,12 @@
     "/Users/sasamezo/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "/Users/sasamezo/.nuget/packages/system.windows.extensions/5.0.0/system.windows.extensions.5.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

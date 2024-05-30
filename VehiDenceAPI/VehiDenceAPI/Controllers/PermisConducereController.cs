@@ -83,14 +83,59 @@ namespace VehiDenceAPI.Controllers
 
                 foreach (Users user in response.listUsers)
                 {
+                    int daysUntilExpiration = response.UserDaysUntilExpiration[user.Email];
                     string message = $"Hi {user.Name}! " +
-                        $"Your Permis Conducere will expire in 7 days from now !" +
+                        $"Your Permis Conducere will expire in {daysUntilExpiration} days from now !" +
                         $"Don't forget to make an appointment to renew it!";
 
                     try
                     {
 
                         await _emailService.SendEmailAsync(user.Email, subject, message);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, $"Failed to send email: {ex.Message}");
+                    }
+
+                }
+                return StatusCode(200, "Email sent successful. Please check your email for resset instructions.");
+            }
+            return StatusCode(500, "Failed to send email");
+        }
+        [HttpPost]
+        [Route("ExpirarePermisConducere")]
+        public async Task<IActionResult> ExpirarePermisConducere()
+        {
+
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
+            Dal dal = new Dal();
+            response = dal.ExpirareAsigurare(connection);
+            RecurringJob.AddOrUpdate("Verificare asigurare", () => ExpirarePermisConducere(), "0 0 * * *");
+            //Console.WriteLine(response.ToString());
+
+            if (response.StatusCode == 200)
+            {
+
+
+
+                string subject = "Inssurance Expired";
+
+                foreach (Users user in response.listUsers)
+                {
+
+                    string message = $"Hi {user.Name}! " +
+                        $"Your Permis Conducere has expired today !" +
+                        $"Don't forget to make an appointment to renew it!";
+
+
+                    try
+                    {
+
+                        await _emailService.SendEmailAsync(user.Email, subject, message);
+
 
                     }
                     catch (Exception ex)
