@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "iOsv2OGjdaQ12RdFvKSwMC+qm27DBBgcdOuYRp23QxEU6JK0BsCGJ0naordkrvBbPEayhiKQn7DAypTWAjuDtg==",
+  "dgSpecHash": "RP8oQ5FQrGbBuK/L8oHPkskTf56d3zdp0/g2OFhaqr7lBgWZvFJPGnZJQu3v4HhYwAbNwmCIoY9aqG+XTrwn/w==",
   "success": true,
   "projectFilePath": "C:\\Users\\catal\\OneDrive\\Desktop\\II_PR\\VehiDence\\VehiDenceAPI\\VehiDenceAPI\\VehiDenceAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\catal\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\catal\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\catal\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\catal\\.nuget\\packages\\hangfire\\1.8.12\\hangfire.1.8.12.nupkg.sha512",
     "C:\\Users\\catal\\.nuget\\packages\\hangfire.aspnetcore\\1.8.12\\hangfire.aspnetcore.1.8.12.nupkg.sha512",
     "C:\\Users\\catal\\.nuget\\packages\\hangfire.core\\1.8.12\\hangfire.core.1.8.12.nupkg.sha512",

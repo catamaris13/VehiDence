@@ -469,3 +469,4 @@ C:\Users\catal\OneDrive\Desktop\II_PR\VehiDence\VehiDenceAPI\VehiDenceAPI\obj\De
 C:\Users\catal\OneDrive\Desktop\II_PR\VehiDence\VehiDenceAPI\VehiDenceAPI\obj\Debug\net8.0\VehiDenceAPI.pdb
 C:\Users\catal\OneDrive\Desktop\II_PR\VehiDence\VehiDenceAPI\VehiDenceAPI\obj\Debug\net8.0\VehiDenceAPI.genruntimeconfig.cache
 C:\Users\catal\OneDrive\Desktop\II_PR\VehiDence\VehiDenceAPI\VehiDenceAPI\obj\Debug\net8.0\ref\VehiDenceAPI.dll
+C:\Users\catal\OneDrive\Desktop\II_PR\VehiDence\VehiDenceAPI\VehiDenceAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
