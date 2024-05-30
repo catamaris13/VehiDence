@@ -49,3 +49,16 @@ C:/Users/catal/OneDrive/Desktop/II_PR/VehiDence/VehiDenceAPI/User.Management.Ser
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/refint/User.Management.Service.dll
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/User.Management.Service.pdb
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/User.Management.Service/obj/Debug/net7.0/ref/User.Management.Service.dll
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\bin\Debug\net7.0\User.Management.Service.deps.json
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\bin\Debug\net7.0\User.Management.Service.dll
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\bin\Debug\net7.0\User.Management.Service.pdb
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\obj\Debug\net7.0\User.Management.Service.csproj.AssemblyReference.cache
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\obj\Debug\net7.0\User.Management.Service.GeneratedMSBuildEditorConfig.editorconfig
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\obj\Debug\net7.0\User.Management.Service.AssemblyInfoInputs.cache
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\obj\Debug\net7.0\User.Management.Service.AssemblyInfo.cs
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\obj\Debug\net7.0\User.Management.Service.csproj.CoreCompileInputs.cache
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\obj\Debug\net7.0\User.Management.Service.sourcelink.json
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\obj\Debug\net7.0\User.Management.Service.dll
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\obj\Debug\net7.0\refint\User.Management.Service.dll
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\obj\Debug\net7.0\User.Management.Service.pdb
+D:\VehiDence\VehiDence\VehiDenceAPI\User.Management.Service\obj\Debug\net7.0\ref\User.Management.Service.dll
