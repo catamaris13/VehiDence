@@ -54,7 +54,7 @@ namespace VehiDenceAPI.Controllers
             return response;
         }
         [HttpGet]
-        [Route("AsigutareList/{nrinmatriculare}")]
+        [Route("AsigurareList/{nrinmatriculare}")]
         public Response AsigutareList(string nrinmatriculare)
         {
             Response response = new Response();

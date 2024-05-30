@@ -367,3 +367,4 @@ C:/Users/catal/OneDrive/Desktop/II_PR/VehiDence/VehiDenceAPI/VehiDenceAPI/bin/De
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/obj/Debug/net8.0/VehiDenceAPI.pdb
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/obj/Debug/net8.0/VehiDenceAPI.genruntimeconfig.cache
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/obj/Debug/net8.0/ref/VehiDenceAPI.dll
+/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/bin/Debug/net8.0/BCrypt.Net-Next.dll
