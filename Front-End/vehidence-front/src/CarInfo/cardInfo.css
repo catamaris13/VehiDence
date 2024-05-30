@@ -1,0 +1,122 @@
+.card-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-radius: 10px; /* Colțuri rotunjite pentru card */
+    margin-bottom: 4%; /* Spațiu între carduri */
+
+}
+.card-info img{
+    width: 30%;
+    height: auto;
+    margin-top: 5%;
+    margin-bottom: 5%;
+
+    border-radius: 5%;
+}
+.info{
+    font-size: 1.2em;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    text-align: center;
+    color: #333;
+}
+
+.info h5 {
+    margin: 0;
+    font-weight: bold; /* Bold pentru titluri */
+    font-size: 1.5em;
+    color: #3c009d; /* Culoare albastră pentru titluri */
+
+}
+
+.info p {
+    margin: 0;
+    color: #000000; /* Culoare gri pentru paragrafe */
+}
+
+/*.drop-down-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1%;
+  background-color: transparent !important;
+  color: transparent !important; 
+}
+
+.drop-down-content {
+  width: 45%;
+  background-color: transparent !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5) !important; 
+}
+
+.drop-down-content .card-header {
+  background-color: transparent !important; 
+}*/
+
+/* Stiluri pentru containerul general */
+/* Ascunde conținutul drop-down la început */
+.drop-down {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45%;
+  margin-bottom: 1%;
+  margin: 0 auto;
+}
+
+.drop-down-item {
+  width: 100%;
+  border-radius: 8px; 
+}
+
+.drop-down-header {
+  background-color: #3c009d;
+  cursor: pointer;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  border-radius: 8px; 
+  color: #fff; 
+  transition: background-color 0.3s ease;
+}
+
+.drop-down-header:hover {
+  background-color: #000000; 
+}
+
+.drop-down-body {
+  display: none; 
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+  border-radius: 8px; 
+  background-color: #3c009d;
+  color: #fff; 
+  margin-top: 1%;
+  max-height: 0; /* Valoarea inițială a max-height */
+  overflow: hidden; 
+  transform: scaleY(0); /* inițial, scalați în jos */
+  transform-origin: top; /* punctul de origine al transformării */
+  transition: transform 0.5s ease-out, max-height 0.5s ease-out, margin 0.5s ease-out;
+  transition-delay: 0.3s; /* întârzierea pentru tranzitie */
+}
+
+.drop-down-item.active .drop-down-body {
+  display: block;
+  max-height: 1000px; /* Valoarea maximă pentru max-height */
+  margin-top: 1%; /* Adăugăm un margin-top pentru a da spațiu */
+  transform: scaleY(1); /* scalați în sus */
+
+}
+
+
+
+
+
+
+
+
+  
