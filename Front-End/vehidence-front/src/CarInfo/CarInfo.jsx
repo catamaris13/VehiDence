@@ -3,6 +3,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import "./carInfo.css";
+<<<<<<< HEAD
+=======
+import CascoDropDown from "./Content/CascoDropDown";
+import AsigurareDropDown from "./Content/AsigurareDropDown";
+import ITPDropDown from "./Content/ITPDropDown"
+import ServiceDropDown from "./Content/ServiceDropDown";
+import VinietaDropDown from "./Content/VinietaDropDown";
+>>>>>>> d5ca2f4f4ab2680a7614a78f5707b552c018c1a3
 
 const CarInfo = () => {
   const { id } = useParams();
@@ -114,6 +122,7 @@ const CarInfo = () => {
                 </div>
               </div>
 
+<<<<<<< HEAD
               <div className="drop-down">
                 <div
                   className={`drop-down-item ${openIndex === `casco-${index}` ? "active" : ""}`}
@@ -201,6 +210,15 @@ const CarInfo = () => {
                 </div>
               </div>
             </div>
+=======
+              <CascoDropDown/>
+              <AsigurareDropDown/>
+              <ITPDropDown/>
+              <ServiceDropDown/>
+              <VinietaDropDown/>
+              
+              </div>
+>>>>>>> d5ca2f4f4ab2680a7614a78f5707b552c018c1a3
           );
         })}
       </div>

@@ -4733,7 +4733,11 @@
       "code": "Undefined",
       "level": "Warning",
       "warningLevel": 1,
+<<<<<<< HEAD
       "message": "Problem reading the cache file D:\\VehiDence\\VehiDence\\VehiDenceAPI\\VehiDenceAPI\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+=======
+      "message": "Problem reading the cache file /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+>>>>>>> d5ca2f4f4ab2680a7614a78f5707b552c018c1a3
     }
   ]
 }

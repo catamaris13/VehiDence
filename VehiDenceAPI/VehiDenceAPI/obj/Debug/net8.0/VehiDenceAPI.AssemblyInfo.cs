@@ -13,7 +13,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VehiDenceAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97df031b48fd0073cb8fe06d597b77135817c2d7")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c983bab33765d3add60d79967786648da94e6ecb")]
+>>>>>>> d5ca2f4f4ab2680a7614a78f5707b552c018c1a3
 [assembly: System.Reflection.AssemblyProductAttribute("VehiDenceAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VehiDenceAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
