@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
@@ -26,6 +27,8 @@
     <Compile Remove="Migrations\20240521143654_ceva.Designer.cs" />
     <Compile Remove="Migrations\20240429080033_NrInmatriculare.cs" />
     <Compile Remove="Migrations\20240429080033_NrInmatriculare.Designer.cs" />
+    <Compile Remove="Migrations\20240530184301_Andrei.cs" />
+    <Compile Remove="Migrations\20240530184301_Andrei.Designer.cs" />
   </ItemGroup>
 
 </Project>

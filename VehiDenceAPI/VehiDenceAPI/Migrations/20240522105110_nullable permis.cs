@@ -10,6 +10,14 @@ namespace VehiDenceAPI.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
+            migrationBuilder.AddColumn<byte[]>(
+              name: "ImageData",
+                table: "PermisConducere",
+                type: "varbinary(max)",
+              nullable: true,
+              defaultValue: 0);
+
             migrationBuilder.AlterColumn<byte[]>(
                 name: "ImageData",
                 table: "PermisConducere",

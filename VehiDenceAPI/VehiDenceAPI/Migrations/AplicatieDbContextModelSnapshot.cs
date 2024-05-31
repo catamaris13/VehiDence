@@ -43,6 +43,9 @@ namespace VehiDenceAPI.Migrations
                     b.Property<byte[]>("ImageData")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
+
                     b.Property<string>("NrInmatriculare")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -73,6 +76,9 @@ namespace VehiDenceAPI.Migrations
                     b.Property<byte[]>("ImageData")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
+
                     b.Property<string>("NrInmatriculare")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -95,6 +101,9 @@ namespace VehiDenceAPI.Migrations
 
                     b.Property<DateTime>("DataExpirare")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
 
                     b.Property<string>("NrInmatriculare")
                         .IsRequired()
@@ -162,6 +171,9 @@ namespace VehiDenceAPI.Migrations
                     b.Property<byte[]>("ImageData")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nume")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -182,6 +194,9 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
 
                     b.Property<int>("KmExpirare")
                         .HasColumnType("int");
@@ -258,6 +273,9 @@ namespace VehiDenceAPI.Migrations
 
                     b.Property<byte[]>("ImageData")
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
 
                     b.Property<string>("NrInmatriculare")
                         .IsRequired()
