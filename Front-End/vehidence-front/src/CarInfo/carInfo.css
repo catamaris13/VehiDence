@@ -4,14 +4,14 @@
     align-items: center;
 
     border-radius: 10px; /* Colțuri rotunjite pentru card */
-    margin-bottom: 4%; /* Spațiu între carduri */
+    margin-bottom: 2%; /* Spațiu între carduri */
 
 }
 .card-info img{
     width: 30%;
     height: auto;
-    margin-top: 5%;
-    margin-bottom: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
     border-radius: 5%;
 }
 .info{
@@ -34,7 +34,8 @@
 
 .info p {
     margin: 0;
-    color: #000000; /* Culoare gri pentru paragrafe */
+    color: #3c009d; 
+    font-weight: bolder;
 }
 
 
@@ -45,6 +46,7 @@
   width: 45%;
   margin-bottom: 1%;
   margin: 0 auto;
+  margin-top: 0%;
 }
 
 .drop-down-item {
@@ -79,19 +81,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   border-radius: 8px;
   background-color: #3c009d;
   color: #fff;
-  margin-top: 1%;
   margin-bottom: 1%;
   max-height: 0;
   overflow: hidden;
   transform: scaleY(0);
   transform-origin: top;
   transition: transform 0.5s ease-out, max-height 0.5s ease-out, margin 0.5s ease-out;
-  transition-delay: 0.3s;
+  transition-delay: 0.05s;
 }
 
 .drop-down-item.active .drop-down-body {
@@ -102,6 +102,14 @@
 
 }
 
+.drop-down-body img {
+  width: 20%;
+  height: auto;
+  margin-top: 3%;
+  margin-bottom: 3%;
+  margin-left: 3%;
+  cursor: pointer;
+}
 
 /* CSS pentru image-container-mare */
 .image-container-mare {
@@ -158,22 +166,33 @@
 }
 
 .text-container p {
-  color: #fff;
+  color: #ffffff;
   padding-top: 2%;
   font-size: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 1%;
 }
 
-.drop-down-body img {
-  width: 20%;
-  height: auto;
-  margin-top: 3%;
-  margin-bottom: 3%;
-  margin-left: 3%;
+.is-valid{
+  margin-top: 1%;
+  margin-bottom: 1%;
+  color: rgb(97, 195, 11);
 }
+.is-not-valid{
+  margin-top: 1%;
+  margin-bottom: 2%;
+  color: red;
+  display: flex;
+  justify-content: left;
+  margin-left: 5%;
+  
+}
+
+
+
 
 
 

@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const CascoDropDown = () => {
+const VinietaDropDown = () => {
   const { id } = useParams();
-  const [casco, setCasco] = useState([]);
+  const [vinieta, setVinieta] = useState([]);
   const [car, setCar] = useState(null);
   const [nrInmatriculare, setNrInmatriculare] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
@@ -34,10 +34,10 @@ const CascoDropDown = () => {
   useEffect(() => {
     if (nrInmatriculare) {
       axios
-        .get(`http://localhost:5277/api/Casco/CascoList/${nrInmatriculare}`)
+        .get(`http://localhost:5277/api/Vigneta/VignetaList/${nrInmatriculare}`)
         .then((response) => {
-          const cascoData = response.data.listCasco
-          setCasco(cascoData);
+          const vinietaData = response.data.listVigneta
+          setVinieta(vinietaData);
         })
         .catch((error) => {
           console.error("Error fetching Casco data", error);
@@ -58,22 +58,22 @@ const CascoDropDown = () => {
   return (
     <div className="drop-down">
       <div
-        className={`drop-down-item ${openIndex === "casco" ? "active" : ""}`}
-        onClick={() => toggleAccordion("casco")}
+        className={`drop-down-item ${openIndex === "vinieta" ? "active" : ""}`}
+        onClick={() => toggleAccordion("vinieta")}
       >
         <div className="drop-down-header" style={{ "--delay": 1 }}>
-          <h3>CASCO</h3>
+          <h3>Vignette</h3>
         </div>
-        {casco.length > 0 &&
-          casco.map((cascoItem, index) => (
+        {vinieta.length > 0 &&
+          vinieta.map((vinietaItem, index) => (
             <div className="drop-down-body" key={index}>
               <div className="content-container">
-                {cascoItem.imageData && (
+                {vinietaItem.imageData && (
                   <img
                     className="img-drop-down"
-                    src={`data:image/jpeg;base64,${cascoItem.imageData}`}
-                    alt="Casco Document"
-                    onClick={() => handleImageClick(cascoItem.imageData)}
+                    src={`data:image/jpeg;base64,${vinietaItem.imageData}`}
+                    alt="Vinieta Document"
+                    onClick={() => handleImageClick(vinietaItem.imageData)}
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src = "placeholder.jpg";
@@ -81,15 +81,15 @@ const CascoDropDown = () => {
                   />
                 )}
                 <div className="text-container">
-                  <p>Insurer name: {cascoItem.asigurator}</p>
-                  <p>Create date: {formatSimpleDate(cascoItem.dataCreare)}</p>
-                  <p>End date: {formatSimpleDate(cascoItem.dataExpirare)}</p>
+                  <p>Country: {vinietaItem.tara}</p>
+                  <p>Create date: {formatSimpleDate(vinietaItem.dataCreare)}</p>
+                  <p>End date: {formatSimpleDate(vinietaItem.dataExpirare)}</p>
                 </div>
               </div>
-              {cascoItem.isValid === 1 && (
+              {vinietaItem.isValid === 1 && (
                 <p className="is-valid">Valid</p>
               )}
-              {cascoItem.isValid === 0 && (
+              {vinietaItem.isValid === 0 && (
                 <p className="is-not-valid">Not Valid</p>
               )}
             </div>
@@ -118,4 +118,4 @@ const CascoDropDown = () => {
   );
 };
 
-export default CascoDropDown;
+export default VinietaDropDown;

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+
 const AsigurareDropDown = () => {
   const { id } = useParams();
   const [asigurare, setAsigurare] = useState([]);
@@ -13,6 +14,12 @@ const AsigurareDropDown = () => {
 
   const toggleAccordion = (index) => {
     setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
+
+  const formatSimpleDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    return formattedDate;
   };
 
   useEffect(() => {
@@ -35,7 +42,7 @@ const AsigurareDropDown = () => {
       axios
         .get(`http://localhost:5277/api/Asigurare/AsigurareList/${nrInmatriculare}`)
         .then((response) => {
-          const asigurareData = response.data.listAsigurare;
+          const asigurareData = response.data.listAsigurare
           setAsigurare(asigurareData);
         })
         .catch((error) => {
@@ -55,20 +62,18 @@ const AsigurareDropDown = () => {
 
   return (
     <div className="drop-down">
-      {asigurare.length > 0 &&
-        asigurare.map((asigurareItem, index) => (
-          <div className="drop-down-item" key={index}>
-            <div
-              className={`drop-down-item ${
-                openIndex === `asigurare-${index}` ? "active" : ""
-              }`}
-              onClick={() => toggleAccordion(`asigurare-${index}`)}
-            >
-              <div className="drop-down-header" style={{ "--delay": 1 }}>
-                <h3>Insurance</h3>
-              </div>
-              <div className="drop-down-body">
-                <div className="content-container">
+      <div
+        className={`drop-down-item ${openIndex === "asigurare" ? "active" : ""}`}
+        onClick={() => toggleAccordion("asigurare")}
+      >
+        <div className="drop-down-header" style={{ "--delay": 1 }}>
+          <h3>Insurance</h3>
+        </div>
+        {asigurare.length > 0 &&
+          asigurare.map((asigurareItem, index) => (
+            <div className="drop-down-body" key={index}>
+              <div className="content-container">
+                {asigurareItem.imageData && (
                   <img
                     className="img-drop-down"
                     src={`data:image/jpeg;base64,${asigurareItem.imageData}`}
@@ -79,16 +84,22 @@ const AsigurareDropDown = () => {
                       e.target.src = "placeholder.jpg";
                     }}
                   />
-                  <div className="text-container">
-                    <p>Insurer name: {asigurareItem.asigurator}</p>
-                    <p>Create date: {asigurareItem.dataCreare}</p>
-                    <p>End date: {asigurareItem.dataExpirare}</p>
-                  </div>
+                )}
+                <div className="text-container">
+                  <p>Insurer name: {asigurareItem.asigurator}</p>
+                  <p>Create date: {formatSimpleDate(asigurareItem.dataCreare)}</p>
+                  <p>End date: {formatSimpleDate(asigurareItem.dataExpirare)}</p>
                 </div>
               </div>
+              {asigurareItem.isValid === 1 && (
+                <p className="is-valid">Valid</p>
+              )}
+              {asigurareItem.isValid === 0 && (
+                <p className="is-not-valid">Not Valid</p>
+              )}
             </div>
-          </div>
-        ))}
+          ))}
+      </div>
       {selectedImage && (
         <div
           className="image-container-mare"

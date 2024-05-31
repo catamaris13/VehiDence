@@ -5,6 +5,9 @@ import ErrorPage from "../ErrorPage/ErrorPage";
 import "./carInfo.css";
 import CascoDropDown from "./Content/CascoDropDown";
 import AsigurareDropDown from "./Content/AsigurareDropDown";
+import ITPDropDown from "./Content/ITPDropDown"
+import ServiceDropDown from "./Content/ServiceDropDown";
+import VinietaDropDown from "./Content/VinietaDropDown";
 
 const CarInfo = () => {
   const { id } = useParams();
@@ -118,6 +121,9 @@ const CarInfo = () => {
 
               <CascoDropDown/>
               <AsigurareDropDown/>
+              <ITPDropDown/>
+              <ServiceDropDown/>
+              <VinietaDropDown/>
               
               </div>
           );
