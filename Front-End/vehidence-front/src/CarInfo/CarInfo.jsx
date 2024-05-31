@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import "./carInfo.css";
+import CascoDropDown from "./Content/CascoDropDown";
+import AsigurareDropDown from "./Content/AsigurareDropDown";
 
 const CarInfo = () => {
   const { id } = useParams();
@@ -114,93 +116,10 @@ const CarInfo = () => {
                 </div>
               </div>
 
-              <div className="drop-down">
-                <div
-                  className={`drop-down-item ${openIndex === `casco-${index}` ? "active" : ""}`}
-                  onClick={() => toggleAccordion(`casco-${index}`)}
-                >
-                  <div className="drop-down-header" style={{ "--delay": 1 }}>
-                    <h3>Casco</h3>
-                  </div>
-                  <div className="drop-down-body">
-                    {casco && casco.length > 0 ? (
-                      <div>
-                        <p>Insurer name: {casco[0].asigurator}</p>
-                        <p>Create date: {casco[0].dataCreare}</p>
-                        <p>End date: {casco[0].dataExpirare}</p>
-                        {casco[0].imageData ? (
-                          <img
-                            className="img-drop-down"
-                            src={`data:image/jpeg;base64,${casco[0].imageData}`}
-                            alt="Casco Document"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src = "placeholder.jpg";
-                            }}
-                          />
-                        ) : (
-                          <p>No image available</p>
-                        )}
-                      </div>
-                    ) : (
-                      <p>Not found</p>
-                    )}
-                  </div>
-                </div>
-
-                <div
-                  className={`drop-down-item ${openIndex === `asigurare-${index}` ? "active" : ""}`}
-                  onClick={() => toggleAccordion(`asigurare-${index}`)}
-                >
-                  <div className="drop-down-header" style={{ "--delay": 1 }}>
-                    <h3>Asigurare</h3>
-                  </div>
-                  <div className="drop-down-body">
-                    {asigurare && asigurare.length > 0 ? (
-                      <div>
-                        <p>Insurer name: {asigurare[0].asigurator}</p>
-                        <p>Create date: {asigurare[0].dataCreare}</p>
-                        <p>End date: {asigurare[0].dataExpirare}</p>
-                        {asigurare[0].imageData ? (
-                          <img
-                            className="img-drop-down"
-                            src={`data:image/jpeg;base64,${asigurare[0].imageData}`}
-                            alt="Asigurare Document"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src = "placeholder.jpg";
-                            }}
-                          />
-                        ) : (
-                          <p>No image available</p>
-                        )}
-                      </div>
-                    ) : (
-                      <p>Not found</p>
-                    )}
-                  </div>
-                </div>
-
-                <div
-                  className={`drop-down-item ${openIndex === `itp-${index}` ? "active" : ""}`}
-                  onClick={() => toggleAccordion(`itp-${index}`)}
-                >
-                  <div className="drop-down-header" style={{ "--delay": 1 }}>
-                    <h3>ITP</h3>
-                  </div>
-                  <div className="drop-down-body">
-                    {itp && itp.length > 0 ? (
-                      <div>
-                        <p>Create date: {itp[0].dataCreare}</p>
-                        <p>End date: {itp[0].dataExpirare}</p>
-                      </div>
-                    ) : (
-                      <p>Not found</p>
-                    )}
-                  </div>
-                </div>
+              <CascoDropDown/>
+              <AsigurareDropDown/>
+              
               </div>
-            </div>
           );
         })}
       </div>
