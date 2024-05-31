@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using VehiDenceAPI.Models;
@@ -7,7 +8,7 @@ namespace VehiDenceAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MasinaController : ControllerBase
+    public class  MasinaController : ControllerBase
     {
         private readonly IConfiguration _configuration;
 
@@ -17,28 +18,50 @@ namespace VehiDenceAPI.Controllers
         }
         [HttpPost]
         [Route("AddMasina")]
-
-        public Response AddMasina(Masina masina)
+        public Response AddMasina([FromForm] Masina masina, IFormFile? imageFile)
         {
             Response response = new Response();
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
             Dal dal = new Dal();
-            response = dal.AddMasina(masina, connection);
 
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    imageFile.CopyTo(ms);
+                    masina.ImageData = ms.ToArray();
+                }
+            }
+
+            response = dal.AddMasina(masina, connection);
             return response;
         }
 
         [HttpGet]
         [Route("MasinaList/{username}")]
-        public Response MasinaList(string username)
+        public Response MasinaListUsername(string username)
         {
             Response response = new Response();
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
             Dal dal = new Dal();
             Masina masina = new Masina();
             masina.Username = username;
-            response = dal.MasinaList(masina, connection);
-            
+            response = dal.MasinaListUsername(masina, connection);
+
+            return response;
+
+        }
+        [HttpGet]
+        [Route("MasinaList/{id:int}")]
+        public Response MasinaListId(int id)
+        {
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
+            Dal dal = new Dal();
+            Masina masina = new Masina();
+            masina.Id = id;
+            response = dal.MasinaListId(masina, connection);
+
             return response;
 
         }

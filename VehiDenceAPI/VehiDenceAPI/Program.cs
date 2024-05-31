@@ -1,74 +1,58 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using NETCore.MailKit;
 using NETCore.MailKit.Core;
-using NETCore.MailKit.Infrastructure.Internal;
-using User.Management.Service.Models;
 using User.Management.Service.Services;
 using VehiDenceAPI.Data;
-using VehiDenceAPI.Models;
 using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-
-
+// Configurare DbContext
 builder.Services.AddDbContext<AplicatieDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("VehiDenceConnectionString")));
+    options.UseSqlServer(configuration.GetConnectionString("VehiDenceConnectionString")));
 
-
-
+// Adăugare serviciu pentru e-mail
 builder.Services.AddScoped<IEmailServices, EmailServices>();
 
-// Add CORS policy
-builder.Services.AddCors(option =>
+// Adăugare politică CORS
+builder.Services.AddCors(options =>
 {
-    option.AddDefaultPolicy(
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
 });
 
-// Add services to the container.
+// Adăugare servicii necesare
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHangfire((sp,config)=>
-{
-    var connectionstring = sp.GetRequiredService<IConfiguration>().GetConnectionString("VehiDenceConnectionString");
-    config.UseSqlServerStorage(connectionstring);
 
+// Configurare Hangfire
+builder.Services.AddHangfire((sp, config) =>
+{
+    var connectionString = sp.GetRequiredService<IConfiguration>().GetConnectionString("VehiDenceConnectionString");
+    config.UseSqlServerStorage(connectionString);
 });
 builder.Services.AddHangfireServer();
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-        });
-});
-// Configure the HTTP request pipeline.
+
+// Construire aplicație
 var app = builder.Build();
 
+// Configurare pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Aplicare politică CORS
 app.UseCors();
 
 app.UseHangfireDashboard();
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

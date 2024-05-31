@@ -40,11 +40,13 @@ namespace VehiDenceAPI.Migrations
                     b.Property<DateTime>("DataExpirare")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NrInmatriculare")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("SerieSasiu")
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NrInmatriculare")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -71,11 +73,13 @@ namespace VehiDenceAPI.Migrations
                     b.Property<DateTime>("DataExpirare")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NrInmatriculare")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("SerieSasiu")
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NrInmatriculare")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -98,6 +102,9 @@ namespace VehiDenceAPI.Migrations
                     b.Property<DateTime>("DataExpirare")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
+
                     b.Property<string>("NrInmatriculare")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -114,6 +121,9 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Marca")
                         .IsRequired()
@@ -158,6 +168,12 @@ namespace VehiDenceAPI.Migrations
                     b.Property<DateTime>("DataExpirare")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nume")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -178,6 +194,9 @@ namespace VehiDenceAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
 
                     b.Property<int>("KmExpirare")
                         .HasColumnType("int");
@@ -251,6 +270,12 @@ namespace VehiDenceAPI.Migrations
 
                     b.Property<DateTime>("DataExpirare")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("IsValid")
+                        .HasColumnType("int");
 
                     b.Property<string>("NrInmatriculare")
                         .IsRequired()
