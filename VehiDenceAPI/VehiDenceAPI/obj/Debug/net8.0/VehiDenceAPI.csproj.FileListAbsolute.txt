@@ -274,6 +274,7 @@ C:/Users/catal/OneDrive/Desktop/II_PR/VehiDence/VehiDenceAPI/VehiDenceAPI/bin/De
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/bin/Debug/net8.0/VehiDenceAPI.pdb
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/bin/Debug/net8.0/Azure.Core.dll
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/bin/Debug/net8.0/Azure.Identity.dll
+/Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/bin/Debug/net8.0/BCrypt.Net-Next.dll
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/bin/Debug/net8.0/Hangfire.AspNetCore.dll
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/bin/Debug/net8.0/Hangfire.Core.dll
 /Users/sasamezo/Documents/VehiDence-master/VehiDence/VehiDenceAPI/VehiDenceAPI/bin/Debug/net8.0/Hangfire.NetCore.dll

@@ -6,6 +6,7 @@ using System.Data;
 using VehiDenceAPI.Controllers;
 using static Hangfire.Storage.JobStorageFeatures;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using static System.Net.WebRequestMethods;
 
 namespace VehiDenceAPI.Models
 {
@@ -20,7 +21,7 @@ namespace VehiDenceAPI.Models
         public Response Registration(Users user, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("Insert into Users(Name,Email,Password,PhoneNo,username,Token,IsValid) Values('" + user.Name + "','" + user.Email + "','" + user.Password + "','" + user.PhoneNo + "','" + user.username + "','" + user.Token + "',0)", connection);
+            SqlCommand cmd = new SqlCommand("Insert into Users(Name,Email,Password,PhoneNo,username,Token,IsValid) Values('" + user.Name + "','" + user.Email + "','" +BCrypt.Net.BCrypt.HashPassword(user.Password) + "','" + user.PhoneNo + "','" + user.username + "','" + user.Token + "',0)", connection);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();
@@ -176,7 +177,7 @@ namespace VehiDenceAPI.Models
         {
             Response response = new Response();
 
-            SqlDataAdapter da = new SqlDataAdapter("select * from Users where Email= '" + user.Email + "'and Password='" + user.Password + "'and IsValid = 1", connection); ;
+            SqlDataAdapter da = new SqlDataAdapter("select * from Users where Email= '" + user.Email + "'and IsValid = 1", connection); ;
 
 
             DataTable dt = new DataTable();
@@ -184,14 +185,26 @@ namespace VehiDenceAPI.Models
 
             if (dt.Rows.Count > 0)
             {
-                response.StatusCode = 200;
-                response.StatusMessage = "Login Successful";
-                Users us = new Users();
-                us.Id = Convert.ToInt32(dt.Rows[0]["Id"]);
-                us.Name = Convert.ToString(dt.Rows[0]["Name"]);
-                us.Email = Convert.ToString(dt.Rows[0]["Email"]);
-                us.username = Convert.ToString(dt.Rows[0]["username"]);
-                response.User = us;
+                string storedHashedPassword = Convert.ToString(dt.Rows[0]["Password"]);
+
+                if (BCrypt.Net.BCrypt.Verify(user.Password, storedHashedPassword))
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Login Successful";
+
+                    Users us = new Users();
+                    us.Id = Convert.ToInt32(dt.Rows[0]["Id"]);
+                    us.Name = Convert.ToString(dt.Rows[0]["Name"]);
+                    us.Email = Convert.ToString(dt.Rows[0]["Email"]);
+                    us.username = Convert.ToString(dt.Rows[0]["username"]);
+                    response.User = us;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Login Failed. Incorrect password.";
+                    response.User = null;
+                }
             }
 
             else
@@ -413,23 +426,37 @@ namespace VehiDenceAPI.Models
             Response response = new Response();
             try
             {
-                SqlCommand cmd = new SqlCommand("Insert into Asigurare ( NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData) Values ( @NrInmatriculare, @DataCreare, @DataExpirare, @Asigurator, @ImageData)", connection);
+                if (asigurare.DataExpirare < asigurare.DataCreare)
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Data expirare trebuie sa fie dupa data creare";
+                    return response;
+                }
+                // Update existing asigurare to IsValid = 0
+                SqlCommand updateCmd = new SqlCommand("UPDATE Asigurare SET IsValid = 0 WHERE NrInmatriculare = @NrInmatriculare", connection);
+                updateCmd.Parameters.AddWithValue("@NrInmatriculare", asigurare.NrInmatriculare);
+                connection.Open();
+                updateCmd.ExecuteNonQuery();
+                connection.Close();
 
-                cmd.Parameters.AddWithValue("@DataCreare", asigurare.DataCreare);
-                cmd.Parameters.AddWithValue("@NrInmatriculare", asigurare.NrInmatriculare);
-                cmd.Parameters.AddWithValue("@DataExpirare", asigurare.DataExpirare);
-                cmd.Parameters.AddWithValue("@Asigurator", asigurare.Asigurator);
+                // Insert new asigurare with IsValid = 1
+                SqlCommand insertCmd = new SqlCommand("INSERT INTO Asigurare (NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData, IsValid) VALUES (@NrInmatriculare, @DataCreare, @DataExpirare, @Asigurator, @ImageData, 1)", connection);
+
+                insertCmd.Parameters.AddWithValue("@DataCreare", asigurare.DataCreare);
+                insertCmd.Parameters.AddWithValue("@NrInmatriculare", asigurare.NrInmatriculare);
+                insertCmd.Parameters.AddWithValue("@DataExpirare", asigurare.DataExpirare);
+                insertCmd.Parameters.AddWithValue("@Asigurator", asigurare.Asigurator);
                 if (asigurare.ImageData != null)
                 {
-                    cmd.Parameters.Add("@ImageData", SqlDbType.VarBinary).Value = asigurare.ImageData;
+                    insertCmd.Parameters.Add("@ImageData", SqlDbType.VarBinary).Value = asigurare.ImageData;
                 }
                 else
                 {
-                    cmd.Parameters.Add("@ImageData", SqlDbType.VarBinary).Value = DBNull.Value;
+                    insertCmd.Parameters.Add("@ImageData", SqlDbType.VarBinary).Value = DBNull.Value;
                 }
 
                 connection.Open();
-                int i = cmd.ExecuteNonQuery();
+                int i = insertCmd.ExecuteNonQuery();
                 connection.Close();
 
                 if (i > 0)
@@ -459,6 +486,7 @@ namespace VehiDenceAPI.Models
 
             return response;
         }
+
         public Response DeleteAsigurare(Asigurare asigurare, SqlConnection connection)
         {
             Response response = new Response();
@@ -520,55 +548,113 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
-        public Response VerificareExpirareAsigurare(SqlConnection connection)
+        public Response VerificareExpirareAsigurareAvans(SqlConnection connection)
         {
             Response response = new Response();
-            SqlDataAdapter da = new SqlDataAdapter("SELECT distinct Users.Email, Users.Name  " +
-    "FROM Users  " +
-    "JOIN Masina  ON Users.username = Masina.Username " +
-    "JOIN Asigurare ON Masina.NrInmatriculare = Asigurare.NrInmatriculare " +
-    "WHERE DATEDIFF(day, GETDATE(), Asigurare.DataExpirare) <= 7;", connection);
+            SqlDataAdapter da = new SqlDataAdapter(
+                "SELECT DISTINCT Users.Email, Users.Name, DATEDIFF(day, GETDATE(), Asigurare.DataExpirare) AS DaysUntilExpiration " +
+                "FROM Users " +
+                "JOIN Masina ON Users.username = Masina.Username " +
+                "JOIN Asigurare ON Masina.NrInmatriculare = Asigurare.NrInmatriculare " +
+                "WHERE DATEDIFF(day, GETDATE(), Asigurare.DataExpirare) = 7 " +
+                "OR DATEDIFF(day, GETDATE(), Asigurare.DataExpirare) = 2;",
+                connection);
 
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<Users> list = new List<Users>();
+            Dictionary<string, int> userDaysUntilExpiration = new Dictionary<string, int>();
+
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-
                     Users us = new Users();
-
                     us.Email = Convert.ToString(dt.Rows[i]["Email"]);
                     us.Name = Convert.ToString(dt.Rows[i]["Name"]);
-
+                    int daysUntilExpiration = Convert.ToInt32(dt.Rows[i]["DaysUntilExpiration"]);
 
                     list.Add(us);
+                    userDaysUntilExpiration[us.Email] = daysUntilExpiration;
                 }
+
                 if (list.Count > 0)
                 {
                     response.StatusCode = 200;
                     response.StatusMessage = "Asigurari Expirate Gasite";
                     response.listUsers = list;
-
-
+                    response.UserDaysUntilExpiration = userDaysUntilExpiration;
                 }
                 else
                 {
                     response.StatusCode = 100;
                     response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
-                    response.listAsigurare = null;
+                    response.listUsers = null;
                 }
-
             }
             else
             {
                 response.StatusCode = 100;
                 response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
-                response.listAsigurare = null;
+                response.listUsers = null;
             }
             return response;
         }
+        public Response ExpirareAsigurare(SqlConnection connection)
+        {
+            Response response = new Response();
+           
+                SqlCommand updateCmd = new SqlCommand("UPDATE Asigurare SET IsValid = 0 WHERE DataExpirare < @CurrentDate", connection);
+                updateCmd.Parameters.AddWithValue("@CurrentDate", DateTime.Now);
+                connection.Open();
+                updateCmd.ExecuteNonQuery();
+                connection.Close();
+            SqlDataAdapter da = new SqlDataAdapter(
+            "SELECT DISTINCT Users.Email, Users.Name " +
+            "FROM Users " +
+            "JOIN Masina ON Users.Username = Masina.Username " +
+            "JOIN Asigurare ON Masina.NrInmatriculare = Asigurare.NrInmatriculare " +
+            "WHERE Asigurare.DataExpirare < GETDATE()",
+            connection);
+
+            DataTable dt = new DataTable();
+                da.Fill(dt);
+                List<Users> list = new List<Users>();
+                if (dt.Rows.Count > 1)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        Users us = new Users();
+                        us.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                        us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+
+                        list.Add(us);
+
+                    }
+
+                    if (list.Count > 0)
+                    {
+                        response.StatusCode = 200;
+                        response.StatusMessage = "Asigurari Expirate Gasite";
+                        response.listUsers = list;
+                    }
+                    else
+                    {
+                        response.StatusCode = 100;
+                        response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
+                        response.listUsers = null;
+                    }
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
+                    response.listUsers = null;
+                }
+                return response;
+
+            
+            }
         /// <summary>
         /// Tot ce tine de Casco
         /// </summary>
@@ -580,7 +666,17 @@ namespace VehiDenceAPI.Models
             Response response = new Response();
             try
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO Casco ( NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData) VALUES ( @NrInmatriculare, @DataCreare, @DataExpirare, @Asigurator, @ImageData)", connection);
+                if (casco.DataExpirare < casco.DataCreare)
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Dataexpirare trebuie sa fie dupa data creare";
+                }
+                    SqlCommand updateCmd = new SqlCommand("UPDATE Casco SET IsValid = 0 WHERE NrInmatriculare = @NrInmatriculare", connection);
+                updateCmd.Parameters.AddWithValue("@NrInmatriculare", casco.NrInmatriculare);
+                connection.Open();
+                updateCmd.ExecuteNonQuery();
+                connection.Close();
+                SqlCommand cmd = new SqlCommand("INSERT INTO Casco ( NrInmatriculare, DataCreare, DataExpirare, Asigurator, ImageData,IsValid) VALUES ( @NrInmatriculare, @DataCreare, @DataExpirare, @Asigurator, @ImageData,1)", connection);
 
                 cmd.Parameters.AddWithValue("@DataCreare", casco.DataCreare);
                 cmd.Parameters.AddWithValue("@NrInmatriculare", casco.NrInmatriculare);
@@ -691,14 +787,17 @@ namespace VehiDenceAPI.Models
         {
             Response response = new Response();
             SqlDataAdapter da = new SqlDataAdapter("SELECT distinct Users.Email, Users.Name  " +
-    "FROM Users  " +
-    "JOIN Masina  ON Users.username = Masina.Username " +
-    "JOIN Casco ON Masina.NrInmatriculare = Casco.NrInmatriculare " +
-    "WHERE DATEDIFF(day, GETDATE(), Casco.DataExpirare) <= 7;", connection);
+            "FROM Users  " +
+            "JOIN Masina  ON Users.username = Masina.Username " +
+            "JOIN Casco ON Masina.NrInmatriculare = Casco.NrInmatriculare " +
+            "WHERE DATEDIFF(day, GETDATE(), Casco.DataExpirare) = 7"+
+            "OR DATEDIFF(day, GETDATE(), Casco.DataExpirare) = 2;",
+     connection);
 
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<Users> list = new List<Users>();
+            Dictionary<string, int> userDaysUntilExpiration = new Dictionary<string, int>();
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -708,15 +807,18 @@ namespace VehiDenceAPI.Models
 
                     us.Email = Convert.ToString(dt.Rows[i]["Email"]);
                     us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+                    int daysUntilExpiration = Convert.ToInt32(dt.Rows[i]["DaysUntilExpiration"]);
 
 
                     list.Add(us);
+                    userDaysUntilExpiration[us.Email] = daysUntilExpiration;
                 }
                 if (list.Count > 0)
                 {
                     response.StatusCode = 200;
                     response.StatusMessage = "Cascouri Expirate Gasite";
                     response.listUsers = list;
+                    response.UserDaysUntilExpiration = userDaysUntilExpiration;
 
 
                 }
@@ -736,6 +838,61 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
+        public Response ExpirareCasco(SqlConnection connection)
+        {
+            Response response = new Response();
+
+            SqlCommand updateCmd = new SqlCommand("UPDATE Casco SET IsValid = 0 WHERE DataExpirare < @CurrentDate", connection);
+            updateCmd.Parameters.AddWithValue("@CurrentDate", DateTime.Now);
+            connection.Open();
+            updateCmd.ExecuteNonQuery();
+            connection.Close();
+            SqlDataAdapter da = new SqlDataAdapter(
+            "SELECT DISTINCT Users.Email, Users.Name " +
+            "FROM Users " +
+            "JOIN Masina ON Users.Username = Masina.Username " +
+            "JOIN Casco ON Masina.NrInmatriculare = Casco.NrInmatriculare " +
+            "WHERE Asigurare.DataExpirare < GETDATE()",
+            connection);
+
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Users> list = new List<Users>();
+            if (dt.Rows.Count > 1)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Users us = new Users();
+                    us.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                    us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+
+                    list.Add(us);
+
+                }
+
+                if (list.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Asigurari Expirate Gasite";
+                    response.listUsers = list;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
+                    response.listUsers = null;
+                }
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
+                response.listUsers = null;
+            }
+            return response;
+
+
+        }
         /// <summary>
         /// Tot ce tine de ITP
         /// </summary>
@@ -745,13 +902,23 @@ namespace VehiDenceAPI.Models
         public Response AddItp(ITP itp, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("INSERT INTO ITP (NrInmatriculare, DataCreare, DataExpirare) VALUES (@NrInmatriculare, @DataCreare, @DataExpirare)", connection);
-    
+            if (itp.DataExpirare < itp.DataCreare)
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Dataexpirare trebuie sa fie dupa data creare";
+            }
+            SqlCommand updateCmd = new SqlCommand("UPDATE ITP SET IsValid = 0 WHERE NrInmatriculare = @NrInmatriculare", connection);
+            updateCmd.Parameters.AddWithValue("@NrInmatriculare", itp.NrInmatriculare);
+            connection.Open();
+            updateCmd.ExecuteNonQuery();
+            connection.Close();
+            SqlCommand cmd = new SqlCommand("INSERT INTO ITP (NrInmatriculare, DataCreare, DataExpirare,IsValid) VALUES (@NrInmatriculare, @DataCreare, @DataExpirare,1)", connection);
+
             // Add parameters to the command before executing it
             cmd.Parameters.AddWithValue("@NrInmatriculare", itp.NrInmatriculare);
             cmd.Parameters.AddWithValue("@DataCreare", itp.DataCreare);
             cmd.Parameters.AddWithValue("@DataExpirare", itp.DataExpirare);
-    
+
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();
@@ -766,7 +933,7 @@ namespace VehiDenceAPI.Models
                 response.StatusCode = 100;
                 response.StatusMessage = "ITP failed";
             }
-    
+
             return response;
         }
 
@@ -836,11 +1003,13 @@ namespace VehiDenceAPI.Models
     "FROM Users  " +
     "JOIN Masina  ON Users.username = Masina.Username " +
     "JOIN ITP ON Masina.NrInmatriculare = ITP.NrInmatriculare " +
-    "WHERE DATEDIFF(day, GETDATE(), ITP.DataExpirare) <= 7;", connection);
+    "WHERE DATEDIFF(day, GETDATE(), ITP.DataExpirare) = 7"+
+    "OR DATEDIFF(day, GETDATE(), ITP.DataExpirare) = 2;", connection);
 
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<Users> list = new List<Users>();
+            Dictionary<string, int> userDaysUntilExpiration = new Dictionary<string, int>();
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -850,15 +1019,18 @@ namespace VehiDenceAPI.Models
 
                     us.Email = Convert.ToString(dt.Rows[i]["Email"]);
                     us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+                    int daysUntilExpiration = Convert.ToInt32(dt.Rows[i]["DaysUntilExpiration"]);
 
 
                     list.Add(us);
+                    userDaysUntilExpiration[us.Email] = daysUntilExpiration;
                 }
                 if (list.Count > 0)
                 {
                     response.StatusCode = 200;
                     response.StatusMessage = "ITP-uri Expirate Gasite";
                     response.listUsers = list;
+                    response.UserDaysUntilExpiration = userDaysUntilExpiration;
 
 
                 }
@@ -878,6 +1050,61 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
+        public Response ExpirareITP(SqlConnection connection)
+        {
+            Response response = new Response();
+
+            SqlCommand updateCmd = new SqlCommand("UPDATE ITP SET IsValid = 0 WHERE DataExpirare < @CurrentDate", connection);
+            updateCmd.Parameters.AddWithValue("@CurrentDate", DateTime.Now);
+            connection.Open();
+            updateCmd.ExecuteNonQuery();
+            connection.Close();
+            SqlDataAdapter da = new SqlDataAdapter(
+            "SELECT DISTINCT Users.Email, Users.Name " +
+            "FROM Users " +
+            "JOIN Masina ON Users.Username = Masina.Username " +
+            "JOIN ITP ON Masina.NrInmatriculare = ITP.NrInmatriculare " +
+            "WHERE Asigurare.DataExpirare < GETDATE()",
+            connection);
+
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Users> list = new List<Users>();
+            if (dt.Rows.Count > 1)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Users us = new Users();
+                    us.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                    us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+
+                    list.Add(us);
+
+                }
+
+                if (list.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Asigurari Expirate Gasite";
+                    response.listUsers = list;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
+                    response.listUsers = null;
+                }
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
+                response.listUsers = null;
+            }
+            return response;
+
+
+        }
         /// <summary>
         /// Tot ce tine de Permis de Conducere
         /// </summary>
@@ -889,7 +1116,18 @@ namespace VehiDenceAPI.Models
             Response response = new Response();
             try
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO PermisConducere (Nume, Username, DataCreare, DataExpirare, Categorie, ImageData) VALUES (@Nume, @Username, @DataCreare, @DataExpirare, @Categorie, @ImageData)", connection);
+                if (permisConducere.DataExpirare < permisConducere.DataCreare)
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Dataexpirare trebuie sa fie dupa data creare";
+                }
+                SqlCommand updateCmd = new SqlCommand("UPDATE PermisConducere SET IsValid = 0 WHERE Username = @Username", connection);
+                updateCmd.Parameters.AddWithValue("@Username", permisConducere.username);
+                connection.Open();
+                updateCmd.ExecuteNonQuery();
+                connection.Close();
+
+                SqlCommand cmd = new SqlCommand("INSERT INTO PermisConducere (Nume, Username, DataCreare, DataExpirare, Categorie, ImageData,IsValid) VALUES (@Nume, @Username, @DataCreare, @DataExpirare, @Categorie, @ImageData,1)", connection);
 
                 cmd.Parameters.AddWithValue("@DataCreare", permisConducere.DataCreare);
                 cmd.Parameters.AddWithValue("@Nume", permisConducere.Nume);
@@ -1003,11 +1241,13 @@ namespace VehiDenceAPI.Models
             SqlDataAdapter da = new SqlDataAdapter("SELECT distinct Users.Email, Users.Name  " +
     "FROM Users  " +
     "JOIN PermisConducere  ON Users.username = PermisConducere.Username " +
-    "WHERE DATEDIFF(day, GETDATE(), PermisConducere.DataExpirare) <= 7;", connection);
+    "WHERE DATEDIFF(day, GETDATE(), PermisConducere.DataExpirare) = 7+" +
+    "OR DATEDIFF(day, GETDATE(), PermisConducere.DataExpirare) = 2;", connection);
 
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<Users> list = new List<Users>();
+            Dictionary<string, int> userDaysUntilExpiration = new Dictionary<string, int>();
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -1017,15 +1257,18 @@ namespace VehiDenceAPI.Models
 
                     us.Email = Convert.ToString(dt.Rows[i]["Email"]);
                     us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+                    int daysUntilExpiration = Convert.ToInt32(dt.Rows[i]["DaysUntilExpiration"]);
 
 
                     list.Add(us);
+                    userDaysUntilExpiration[us.Email] = daysUntilExpiration;
                 }
                 if (list.Count > 0)
                 {
                     response.StatusCode = 200;
                     response.StatusMessage = "Permise Expirate Gasite";
                     response.listUsers = list;
+                    response.UserDaysUntilExpiration = userDaysUntilExpiration;
 
 
                 }
@@ -1045,6 +1288,60 @@ namespace VehiDenceAPI.Models
             }
             return response;
         }
+        public Response ExpirarePermisConducere(SqlConnection connection)
+        {
+            Response response = new Response();
+
+            SqlCommand updateCmd = new SqlCommand("UPDATE PermisConducere SET IsValid = 0 WHERE DataExpirare < @CurrentDate", connection);
+            updateCmd.Parameters.AddWithValue("@CurrentDate", DateTime.Now);
+            connection.Open();
+            updateCmd.ExecuteNonQuery();
+            connection.Close();
+            SqlDataAdapter da = new SqlDataAdapter(
+            "SELECT DISTINCT Users.Email, Users.Name " +
+            "FROM Users " +
+            "JOIN PermisConducere  ON Users.username = PermisConducere.Username " +
+            "WHERE Asigurare.DataExpirare < GETDATE()",
+            connection);
+
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Users> list = new List<Users>();
+            if (dt.Rows.Count > 1)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Users us = new Users();
+                    us.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                    us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+
+                    list.Add(us);
+
+                }
+
+                if (list.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Asigurari Expirate Gasite";
+                    response.listUsers = list;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
+                    response.listUsers = null;
+                }
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
+                response.listUsers = null;
+            }
+            return response;
+
+
+        }
 
         /// <summary>
         /// Tot ce tine de Revizie
@@ -1055,7 +1352,13 @@ namespace VehiDenceAPI.Models
         public Response AddRevizieService(RevizieService revizieService, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("Insert into RevizieService (SerieSasiu,KmUltim,KmExpirare,ServiceName) Values ('" + revizieService.SerieSasiu + "','"+revizieService.KmUltim+"','" + revizieService.KmExpirare + "','"+revizieService.ServiceName+"')", connection);
+
+            SqlCommand updateCmd = new SqlCommand("UPDATE RevizieService SET IsValid = 0 WHERE SerieSasiu = @SerieSasiu", connection);
+            updateCmd.Parameters.AddWithValue("@SerieSasiu", revizieService.SerieSasiu);
+            connection.Open();
+            updateCmd.ExecuteNonQuery();
+            connection.Close();
+            SqlCommand cmd = new SqlCommand("Insert into RevizieService (SerieSasiu,KmUltim,KmExpirare,ServiceName,IsValid) Values ('" + revizieService.SerieSasiu + "','"+revizieService.KmUltim+"','" + revizieService.KmExpirare + "','"+revizieService.ServiceName+"',1)", connection);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();
@@ -1142,7 +1445,18 @@ namespace VehiDenceAPI.Models
             Response response = new Response();
             try
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO Vigneta (NrInmatriculare, DataCreare, DataExpirare, Tara, ImageData) VALUES (@NrInmatriculare, @DataCreare, @DataExpirare, @Tara, @ImageData)", connection);
+                if (vigneta.DataExpirare < vigneta.DataCreare)
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Dataexpirare trebuie sa fie dupa data creare";
+                }
+                SqlCommand updateCmd = new SqlCommand("UPDATE Vigneta SET IsValid = 0 WHERE NrInmatriculare = @NrInmatriculare", connection);
+                updateCmd.Parameters.AddWithValue("@NrInmatriculare", vigneta.NrInmatriculare);
+                connection.Open();
+                updateCmd.ExecuteNonQuery();
+                connection.Close();
+
+                SqlCommand cmd = new SqlCommand("INSERT INTO Vigneta (NrInmatriculare, DataCreare, DataExpirare, Tara, ImageData,IsValid) VALUES (@NrInmatriculare, @DataCreare, @DataExpirare, @Tara, @ImageData,1)", connection);
 
                 cmd.Parameters.AddWithValue("@DataCreare", vigneta.DataCreare);
                 cmd.Parameters.AddWithValue("@NrInmatriculare", vigneta.NrInmatriculare);
@@ -1257,11 +1571,13 @@ namespace VehiDenceAPI.Models
     "FROM Users  " +
     "JOIN Masina  ON Users.username = Masina.Username " +
     "JOIN Vigneta ON Masina.NrInmatriculare = Vigneta.NrInmatriculare " +
-    "WHERE DATEDIFF(day, GETDATE(), Vigneta.DataExpirare) <= 2;", connection);
+    "WHERE DATEDIFF(day, GETDATE(), Vigneta.DataExpirare) = 7"+
+    "OR DATEDIFF(day, GETDATE(), Vigneta.DataExpirare) = 2;", connection);
 
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<Users> list = new List<Users>();
+            Dictionary<string, int> userDaysUntilExpiration = new Dictionary<string, int>();
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -1271,15 +1587,18 @@ namespace VehiDenceAPI.Models
 
                     us.Email = Convert.ToString(dt.Rows[i]["Email"]);
                     us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+                    int daysUntilExpiration = Convert.ToInt32(dt.Rows[i]["DaysUntilExpiration"]);
 
 
                     list.Add(us);
+                    userDaysUntilExpiration[us.Email] = daysUntilExpiration;
                 }
                 if (list.Count > 0)
                 {
                     response.StatusCode = 200;
                     response.StatusMessage = "Vignete Expirate Gasite";
                     response.listUsers = list;
+                    response.UserDaysUntilExpiration = userDaysUntilExpiration;
 
 
                 }
@@ -1298,6 +1617,61 @@ namespace VehiDenceAPI.Models
                 response.listAsigurare = null;
             }
             return response;
+        }
+        public Response ExpirareVigneta(SqlConnection connection)
+        {
+            Response response = new Response();
+
+            SqlCommand updateCmd = new SqlCommand("UPDATE Vigneta SET IsValid = 0 WHERE DataExpirare < @CurrentDate", connection);
+            updateCmd.Parameters.AddWithValue("@CurrentDate", DateTime.Now);
+            connection.Open();
+            updateCmd.ExecuteNonQuery();
+            connection.Close();
+            SqlDataAdapter da = new SqlDataAdapter(
+            "SELECT DISTINCT Users.Email, Users.Name " +
+            "FROM Users " +
+            "JOIN Masina ON Users.Username = Masina.Username " +
+            "JOIN Vigneta ON Masina.NrInmatriculare = Vigneta.NrInmatriculare " +
+            "WHERE Asigurare.DataExpirare < GETDATE()",
+            connection);
+
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Users> list = new List<Users>();
+            if (dt.Rows.Count > 1)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Users us = new Users();
+                    us.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                    us.Name = Convert.ToString(dt.Rows[i]["Name"]);
+
+                    list.Add(us);
+
+                }
+
+                if (list.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Asigurari Expirate Gasite";
+                    response.listUsers = list;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
+                    response.listUsers = null;
+                }
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Nu au fost gasite Asigurari Expirate";
+                response.listUsers = null;
+            }
+            return response;
+
+
         }
 
 

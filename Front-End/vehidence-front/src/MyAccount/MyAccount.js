@@ -146,6 +146,7 @@ const MyAccount = () => {
           <input
             type="password"
             value={password}
+            readOnly
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
