@@ -5,6 +5,7 @@ import "../index.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 const Login = () => {
   const history = useNavigate();
   const [email, setEmail] = useState("");
@@ -36,7 +37,7 @@ const Login = () => {
         if (dt.statusCode === 200) {
           setIsLogin(true);
           localStorage.setItem("islogin", true);
-          // localStorage.setItem('email',email);
+          localStorage.setItem('email',email);
           history("/home");
           //window.location.href('/signup')
         } else {

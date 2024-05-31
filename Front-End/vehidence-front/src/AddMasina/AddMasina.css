@@ -1,0 +1,149 @@
+.content-add-masina h1 {
+    color: #3c009d;
+  }
+  
+  .inputs-fara-poza {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    background: transparent;
+  }
+  
+  .input-fara-poza {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    width: 480px;
+    height: 80px;
+    background: #f8f8f8;
+    border-radius: 20px;
+    margin-top: 20px;
+  }
+  
+  .input-fara-poza input {
+    height: 60px;
+    width: 400px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #3c009d;
+    font-size: 22px;
+    padding-left: 20px;
+    text-align: center;
+  }
+  
+  /* Stilurile pentru placeholder */
+  .input-fara-poza input::placeholder {
+    color: #3c009d;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    padding-left: 20px;
+  }
+  
+  .input-row {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    gap: 80px;
+    background: transparent;
+    justify-content: center;
+  }
+  
+  .image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+  }
+  
+
+  .image-upload-button {
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    background-color: #3c009d;
+    color: #f8f8f8;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    margin-top: 60px;
+    transition: background-color 0.3s ease;
+
+
+  }
+
+  .image-upload-button:hover{
+    background-color: #000000;
+  }
+
+  
+  
+  .file-name {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #3c009d;
+  }
+
+  .file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .image-upload-button::before {
+    content: "Upload Image"; /* Modifică conținutul butonului */
+    /* Restul stilurilor rămân neschimbate */
+}
+
+.button-new-car{
+    display: flex;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    margin: auto;
+    margin-top: 40px;
+    font-size: 30px;
+    background-color: #3c009d;
+    color: #f8f8f8;
+    padding: 3px 30px;
+    cursor: pointer;
+    margin-top: 80px;
+  }
+  
+  .button-container-add-car{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+  }
+  .button-new{
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    background-color: #3c009d;
+    color: #f8f8f8;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    margin-top: 60px;
+    font-size: 17px;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  .button-new:hover {
+    background-color: #000000; /* Darker shade of the original color */
+}

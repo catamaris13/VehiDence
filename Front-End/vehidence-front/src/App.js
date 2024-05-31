@@ -1,31 +1,3 @@
-/*import Navbar from "./Navbar";
-import Home from "./Home";
-import Login from "./LoginSignUp/Login";
-import SignUp from "./LoginSignUp/SignUp"
-import { useEffect, useState } from "react";
-
-const App = () => {
-  const currentPath = window.location.pathname;
-  if (currentPath == "/login") {
-    return <Login />;
-  }
-  if(currentPath == "/signup"){
-    return <SignUp/>;
-  }
-  else {
-    return (
-      <div className="App">
-        <Navbar />
-        <div className="content">
-          <Home />
-        </div>
-      </div>
-    );
-  }
-};
-
-export default App;*/
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from "./Home";
 import Login from "./LoginSignUp/Login";
@@ -36,6 +8,14 @@ import RessetPassword from './RessetPassword/RessetPassword'
 import React from 'react';
 import VerifyEmailPage from './RessetPassword/VerifyEmailPage';
 import EnterEmailPage from './RessetPassword/EnterEmailPage';
+import AddMasina from './AddMasina/AddMasina';
+import AddCasco from './AddCasco/AddCasco';
+import AddItp from './AddItp/Additp';
+import AddAsigurare from './AddAsigurare/AddAsigurare';
+import AddPermis from './AddPermis/AddPermis';
+import AddVinieta from './AddVinieta/AddVinieta';
+import Servis from './Servis/Servis';
+import CarInfo from './CarInfo/CarInfo';
 
 function App() {
 
@@ -50,6 +30,14 @@ function App() {
             <Route path='/myaccount' element={<MyAccount />} />
             <Route path="/enter_email" element={<EnterEmailPage/>}/>
             <Route path='/verify_email_lost_password' element={<VerifyEmailPage/>}/>
+            <Route path='/new_casco' element= {<AddCasco/>}/>
+            <Route path='/new_car' element={<AddMasina/>}/>
+            <Route path='/new_itp' element={<AddItp/>}/>
+            <Route path='/new_insurance' element = {<AddAsigurare/>}/>
+            <Route path='/new_driver_license' element = {<AddPermis/>}/>
+            <Route path='/new_vignette' element = {<AddVinieta/>}/>
+            <Route path='/new_service' element = {<Servis/>}/>
+            <Route path='/car/:id' element={<CarInfo />}/>
             <Route path='*' element={<Home />} />
           </Routes>
         </Router>

@@ -32,7 +32,7 @@ const SignUp = () => {
           Name:name,
           PhoneNo:phoneNumber
         }
-        const url='https://localhost:7165/api/User/Registration';
+        const url='http://localhost:5277/api/User/Registration';
         axios.post(url,data)
         .then((result)=>{
             const dt=result.data;

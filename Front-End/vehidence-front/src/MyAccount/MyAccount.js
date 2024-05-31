@@ -20,7 +20,7 @@ const MyAccount = () => {
   const emailUser = localStorage.getItem("email");
   useEffect(() => {
     axios
-      .get("https://localhost:7165/api/User/All/Users")
+      .get("http://localhost:5277/api/User/All/Users")
       .then((response) => {
         const userData = response.data;
         if (userData.length > 0) {
@@ -55,7 +55,7 @@ const MyAccount = () => {
       PhoneNo: phone,
     };
     axios
-      .put("https://localhost:7165/api/User/Update", userData)
+      .put("http://localhost:5277/api/User/Update", userData)
       .then((response) => {
         if (response.data.statusCode) {
           alert("Your account has been updated successfully!");
@@ -91,7 +91,7 @@ const MyAccount = () => {
       PhoneNo: phone,
     };
     axios
-      .delete("https://localhost:7165/api/User/Delete", {
+      .delete("http://localhost:5277/api/User/Delete", {
         data: userData,
         headers: { "Content-Type": "application/json" },
       })
@@ -127,6 +127,7 @@ const MyAccount = () => {
           <input
             type="text"
             value={username}
+            readOnly
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
@@ -145,6 +146,7 @@ const MyAccount = () => {
           <input
             type="password"
             value={password}
+            readOnly
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
