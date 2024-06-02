@@ -5,7 +5,7 @@
 namespace VehiDenceAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class nullableindatabase : Migration
+    public partial class Nullableindatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

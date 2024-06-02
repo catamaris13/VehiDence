@@ -15,6 +15,5 @@ namespace VehiDenceAPI.Data
         public DbSet<PermisConducere> PermisConducere { get; set; }
         public DbSet<RevizieService> RevizieService { get; set; }
         public DbSet<Vigneta> Vigneta { get; set; }
-
     }
 }

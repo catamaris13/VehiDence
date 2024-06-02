@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using NETCore.MailKit.Core;
 using User.Management.Service.Services;
 using VehiDenceAPI.Data;
 using Hangfire;

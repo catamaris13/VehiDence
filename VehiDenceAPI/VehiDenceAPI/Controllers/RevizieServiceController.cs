@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using User.Management.Service.Services;
 using VehiDenceAPI.Models;
+using VehiDenceAPI.Services;
 
 namespace VehiDenceAPI.Controllers
 {
@@ -18,45 +19,29 @@ namespace VehiDenceAPI.Controllers
             _configuration = configuration;
             _emailService = emailService;
         }
+
         [HttpPost]
         [Route("AddRevizieService")]
-
         public Response AddRevizieService(RevizieService revizieService)
         {
-            Response response = new Response();
-            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
-            Dal dal = new Dal();
-            response = dal.AddRevizieService(revizieService, connection);
-
-
-
-            return response;
+            return new RevizieServiceService().AddRevizieService(revizieService,
+                new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
         }
+
         [HttpDelete]
         [Route("DeleteRevizieService")]
-
         public Response DeleteRevizieService(RevizieService revizieService)
         {
-            Response response = new Response();
-            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
-            Dal dal = new Dal();
-            response = dal.DeleteRevizieService(revizieService, connection);
-
-            return response;
+            return new RevizieServiceService().DeleteRevizieService(revizieService,
+                new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
         }
+
         [HttpGet]
         [Route("RevizieServiceList/{serieSasiu}")]
         public Response RevizieServiceList(string serieSasiu)
         {
-            Response response = new Response();
-            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
-            Dal dal = new Dal();
-            RevizieService rs = new RevizieService();
-            rs.SerieSasiu = serieSasiu;
-            response = dal.RevizieServiceList(rs, connection);
-
-            return response;
-
+            return new RevizieServiceService().RevizieServiceList(new RevizieService(serieSasiu),
+                new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
         }
     }
 }
