@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./home.css";
+import HomePage2 from "./HomePage2/HomePage2";
 
 const Home = () => {
   const [masini, setMasini] = useState([]);
@@ -163,6 +164,7 @@ const Home = () => {
             </Link>
           </div>
         </nav>
+        <HomePage2/>
       </div>
     );
   } else {

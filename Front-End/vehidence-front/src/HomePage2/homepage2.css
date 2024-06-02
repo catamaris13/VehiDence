@@ -1,0 +1,99 @@
+.logo{
+    width: 400px;
+    height: 375px;
+    background-image: url(/src/assets/logo.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 30px;
+    position:fixed;
+    left: 75px;
+    bottom: 175px;
+    -webkit-mask-image: linear-gradient(45deg,#000 25%,rgba(0,0,0,.2) 50%,#000 75%);
+    mask-image: linear-gradient(45deg,#000 25%,rgba(0,0,0,.2) 50%,#000 75%);
+    -webkit-mask-size: 800%;
+    mask-size: 800%;
+    -webkit-mask-position: 0;
+    mask-position: 0;
+}
+
+.logo:hover {
+    box-shadow:0 30px 35px rgba(0,0,0,0.7);
+    transition: mask-position 2s ease,-webkit-mask-position 2s ease;
+    -webkit-mask-position: 120%;
+    mask-position: 120%;
+    opacity: 1;
+}
+
+.copyright{
+    font-size: medium;
+    color: white;
+    position:fixed;
+    right: 10px;
+    bottom:10px;
+}
+
+.title{
+    font-size:180%;
+    font-family: 'Times New Roman', Times, serif;
+    color:darkslateblue;
+    position:fixed;
+    right: 440px;
+    top:120px;
+
+}
+
+.disclaimer{
+    opacity: 75%;
+    font-style: italic;
+    font-size:x-small;
+    color: white;
+    position:fixed;
+    left: 20px;
+    bottom:15px;
+}
+
+.subtitle{
+    font-size:80%;
+    font-family: 'Times New Roman', Times, serif;
+    color:darkslateblue;
+    position:fixed;
+    right: 235px;
+    top:190px;
+}
+
+.Cata{
+    color:rgb(4, 72, 121);
+    position:fixed;
+    right: 340px;
+    top:320px;  
+}
+
+.Sasha{
+    color:rgb(4, 72, 121);
+    position:fixed;
+    right: 195px;
+    top:370px; 
+}
+
+.Dana{
+    color:rgb(4, 72, 121);
+    position:fixed;
+    right: 165px;
+    top:420px; 
+}
+
+.Gabi{
+    color:rgb(4, 72, 121);
+    position:fixed;
+    right: 240px;
+    top:470px; 
+}
+
+.Andrei{
+    color:rgb(4, 72, 121);
+    position:fixed;
+    right: 215px;
+    top:520px; 
+}
+  
+  

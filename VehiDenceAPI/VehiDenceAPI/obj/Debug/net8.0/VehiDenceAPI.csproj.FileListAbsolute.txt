@@ -470,3 +470,4 @@ D:\VehiDence\VehiDence\VehiDenceAPI\VehiDenceAPI\obj\Debug\net8.0\refint\VehiDen
 D:\VehiDence\VehiDence\VehiDenceAPI\VehiDenceAPI\obj\Debug\net8.0\VehiDenceAPI.pdb
 D:\VehiDence\VehiDence\VehiDenceAPI\VehiDenceAPI\obj\Debug\net8.0\VehiDenceAPI.genruntimeconfig.cache
 D:\VehiDence\VehiDence\VehiDenceAPI\VehiDenceAPI\obj\Debug\net8.0\ref\VehiDenceAPI.dll
+D:\VehiDence\VehiDence\VehiDenceAPI\VehiDenceAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
