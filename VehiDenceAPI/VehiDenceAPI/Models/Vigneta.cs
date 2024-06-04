@@ -14,7 +14,7 @@ namespace VehiDenceAPI.Models
         [BindNever]
         public byte[]? ImageData { get; set; }
 
-        public Vigneta(int id, string nrInmatriculare, DateTime dataCreare, DateTime dataExpirare,  string tara, byte[]? imageData)
+        public Vigneta(int id, string nrInmatriculare, DateTime dataCreare, DateTime dataExpirare,  string tara, byte[]? imageData,int isvalid)
         {
             Id = id;
             NrInmatriculare = nrInmatriculare;
@@ -22,6 +22,7 @@ namespace VehiDenceAPI.Models
             DataExpirare = dataExpirare;
             Tara = tara;
             ImageData = imageData;
+            IsValid = isvalid;
         }
 
         public Vigneta(string nrInmatriculare)

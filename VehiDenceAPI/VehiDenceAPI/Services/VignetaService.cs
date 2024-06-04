@@ -73,7 +73,7 @@ namespace VehiDenceAPI.Services
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     list.Add(new Vigneta(Convert.ToInt32(dt.Rows[i]["Id"]), Convert.ToString(dt.Rows[i]["NrInmatriculare"]), Convert.ToDateTime(dt.Rows[i]["DataCreare"]),
-                        Convert.ToDateTime(dt.Rows[i]["DataExpirare"]), Convert.ToString(dt.Rows[i]["Tara"]), dt.Rows[i]["ImageData"] as byte[]));
+                        Convert.ToDateTime(dt.Rows[i]["DataExpirare"]), Convert.ToString(dt.Rows[i]["Tara"]), dt.Rows[i]["ImageData"] as byte[], Convert.ToInt32(dt.Rows[i]["IsValid"])));
                 }
                 if (list.Count > 0)
                     return new Response(200, "Vignete gasite", list);

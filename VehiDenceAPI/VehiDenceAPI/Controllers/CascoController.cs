@@ -49,8 +49,14 @@ namespace VehiDenceAPI.Controllers
         [Route("CascoList/{nrinmatriculare}")]
         public Response CascoList(string nrInmatriculare)
         {
-            return new CascoService().CascoList(new Casco(nrInmatriculare),
-                new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
+            CascoService dal = new CascoService();
+            Casco casco = new Casco();
+            casco.NrInmatriculare = nrInmatriculare;
+            response = dal.CascoList(casco, connection);
+
+            return response;
         }
 
         [HttpPost]

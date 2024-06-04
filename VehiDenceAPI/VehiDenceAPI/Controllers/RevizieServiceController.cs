@@ -22,7 +22,7 @@ namespace VehiDenceAPI.Controllers
 
         [HttpPost]
         [Route("AddRevizieService")]
-        public Response AddRevizieService(RevizieService revizieService)
+        public Response AddRevizieService([FromForm] RevizieService revizieService)
         {
             return new RevizieServiceService().AddRevizieService(revizieService,
                 new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));

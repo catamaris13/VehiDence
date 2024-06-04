@@ -65,6 +65,7 @@ namespace VehiDenceAPI.Services
         }
         public Response AsigurareList(Asigurare asigurare, SqlConnection connection)
         {
+            
             SqlDataAdapter da = new SqlDataAdapter("select * from Asigurare where NrInmatriculare='" + asigurare.NrInmatriculare + "'", connection);
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -74,7 +75,7 @@ namespace VehiDenceAPI.Services
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     list.Add(new Asigurare(Convert.ToInt32(dt.Rows[i]["Id"]), Convert.ToString(dt.Rows[i]["NrInmatriculare"]), Convert.ToDateTime(dt.Rows[i]["DataCreare"]),
-                        Convert.ToDateTime(dt.Rows[i]["DataExpirare"]), Convert.ToString(dt.Rows[i]["Asigurator"]), dt.Rows[i]["ImageData"] as byte[]));
+                        Convert.ToDateTime(dt.Rows[i]["DataExpirare"]), Convert.ToString(dt.Rows[i]["Asigurator"]), dt.Rows[i]["ImageData"] as byte[], Convert.ToInt32(dt.Rows[i]["IsValid"])));
                 }
                 if (list.Count > 0)
                     return new Response(200, "Asigurari gasite", list);
@@ -85,6 +86,7 @@ namespace VehiDenceAPI.Services
         }
         public Response VerificareExpirareAsigurareAvans(SqlConnection connection)
         {
+            
             SqlDataAdapter da = new SqlDataAdapter(
                 "SELECT DISTINCT Users.Email, Users.Name, DATEDIFF(day, GETDATE(), Asigurare.DataExpirare) AS DaysUntilExpiration " +
                 "FROM Users " +

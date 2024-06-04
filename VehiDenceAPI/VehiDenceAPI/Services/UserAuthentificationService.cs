@@ -8,13 +8,27 @@ namespace VehiDenceAPI.Services
     {
         public Response Registration(Users user, SqlConnection connection)
         {
-            SqlCommand cmd = new SqlCommand("Insert into Users(Name,Email,Password,PhoneNo,username,Token,IsValid) Values('" + user.Name + "','" + user.Email + "','" + BCrypt.Net.BCrypt.HashPassword(user.Password) + "','" + user.PhoneNo + "','" + user.username + "','" + user.Token + "',0)", connection);
-            connection.Open();
-            int i = cmd.ExecuteNonQuery();
-            connection.Close();
-            if (i > 0)
-                return new Response(200, "Registration successful");
-            else return new Response(100, "Registration failed");
+            try
+            {
+                SqlCommand cmd = new SqlCommand("Insert into Users(Name,Email,Password,PhoneNo,username,Token,IsValid) Values('" + user.Name + "','" + user.Email + "','" + BCrypt.Net.BCrypt.HashPassword(user.Password) + "','" + user.PhoneNo + "','" + user.username + "','" + user.Token + "',0)", connection);
+                connection.Open();
+                int i = cmd.ExecuteNonQuery();
+                connection.Close();
+                if (i > 0)
+                    return new Response(200, "Registration successful");
+                else return new Response(100, "Registration failed");
+            }
+            catch (Exception ex)
+            {
+                return new Response(100, "An error occurred: " + ex.Message);
+            }
+            finally
+            {
+                if (connection.State == System.Data.ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
         }
         public Response ResetToken(Users user, SqlConnection connection)
         {
@@ -30,7 +44,7 @@ namespace VehiDenceAPI.Services
         {
             connection.Open();
             SqlCommand command = new SqlCommand("UPDATE Users SET  Password = @Password WHERE Token=@Token", connection);
-            command.Parameters.AddWithValue("@Password", user.Password);
+            command.Parameters.AddWithValue("@Password", BCrypt.Net.BCrypt.HashPassword(user.Password));
             command.Parameters.AddWithValue("@Token", user.Token);
             int queryResult = command.ExecuteNonQuery();
             connection.Close();

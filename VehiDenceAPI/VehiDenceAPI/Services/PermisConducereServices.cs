@@ -65,7 +65,7 @@ namespace VehiDenceAPI.Services
 
         public Response PermisConducereList(PermisConducere permisConducere, SqlConnection connetion)
         {
-            SqlDataAdapter da = new SqlDataAdapter("select * from PermisConducere where NrInmatriculare='" + permisConducere.username + "'", connetion);
+            SqlDataAdapter da = new SqlDataAdapter("select * from PermisConducere where username='" + permisConducere.username + "'", connetion);
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<PermisConducere> list = new List<PermisConducere>();
@@ -75,7 +75,7 @@ namespace VehiDenceAPI.Services
                 {
                     list.Add(new PermisConducere(Convert.ToInt32(dt.Rows[i]["Id"]), Convert.ToString(dt.Rows[i]["Nume"]), Convert.ToString(dt.Rows[i]["username"]),
                         Convert.ToDateTime(dt.Rows[i]["DataCreare"]), Convert.ToDateTime(dt.Rows[i]["DataExpirare"]),
-                        Convert.ToString(dt.Rows[i]["Categorie"]), dt.Rows[i]["ImageData"] as byte[]));
+                        Convert.ToString(dt.Rows[i]["Categorie"]), dt.Rows[i]["ImageData"] as byte[], Convert.ToInt32(dt.Rows[i]["IsValid"])));
                 }
                 if (list.Count > 0)
                     return new Response(200, "Permise de conducere gasite", list);

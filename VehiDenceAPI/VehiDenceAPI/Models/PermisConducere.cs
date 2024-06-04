@@ -15,7 +15,7 @@ namespace VehiDenceAPI.Models
         [BindNever]
         public byte[]? ImageData { get; set; }
 
-        public PermisConducere(int id, string nume, string username, DateTime dataCreare, DateTime dataExpirare, string categorie, byte[]? imageData)
+        public PermisConducere(int id, string nume, string username, DateTime dataCreare, DateTime dataExpirare, string categorie, byte[]? imageData,int isvalid)
         {
             Id = id;
             Nume = nume;
@@ -24,6 +24,7 @@ namespace VehiDenceAPI.Models
             DataExpirare = dataExpirare;
             Categorie = categorie;
             ImageData = imageData;
+            IsValid = isvalid;
         }
 
         public PermisConducere(string username)

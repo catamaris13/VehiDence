@@ -1,4 +1,5 @@
-﻿using Hangfire;
+﻿
+using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -41,8 +42,14 @@ namespace VehiDenceAPI.Controllers
         [Route("ITPList/{nrinmatriculare}")]
         public Response ITPList(string nrInmatriculare)
         {
-            return new ITPServices().DeleteITP(new ITP(nrInmatriculare),
-                new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
+            ITPServices dal = new ITPServices();
+            ITP itp = new ITP();
+            itp.NrInmatriculare = nrInmatriculare;
+            response = dal.ITPList(itp, connection);
+
+            return response;
         }
 
         [HttpPost]

@@ -46,13 +46,19 @@ namespace VehiDenceAPI.Controllers
 
         [HttpGet]
         [Route("AsigurareList/{nrinmatriculare}")]
-        public Response AsigurareList(string nrInmatriculare)
+        public Response AsigutareList(string nrinmatriculare)
         {
-            return new AsigurareService().AsigurareList(new Asigurare(nrInmatriculare),
-                new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
+            AsigurareService dal = new AsigurareService();
+            Asigurare asigurare = new Asigurare();
+            asigurare.NrInmatriculare = nrinmatriculare;
+            response = dal.AsigurareList(asigurare, connection);
+
+            return response;
 
         }
-        
+
         [HttpPost]
         [Route("SendExpirationReminder")]
         public async Task<IActionResult> SendExpirationReminder7()

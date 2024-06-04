@@ -44,7 +44,7 @@ namespace VehiDenceAPI.Services
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     list.Add(new RevizieService(Convert.ToInt32(dt.Rows[i]["Id"]), Convert.ToString(dt.Rows[i]["SerieSasiu"]), Convert.ToInt32(dt.Rows[i]["KmUltim"]),
-                        Convert.ToInt32(dt.Rows[i]["KmExpirare"]), Convert.ToString(dt.Rows[i]["ServiceName"])));
+                        Convert.ToInt32(dt.Rows[i]["KmExpirare"]), Convert.ToString(dt.Rows[i]["ServiceName"]), Convert.ToInt32(dt.Rows[i]["IsValid"])));
                 }
                 if (list.Count > 0)
                    return new Response(200, "Revizii gasite", list);

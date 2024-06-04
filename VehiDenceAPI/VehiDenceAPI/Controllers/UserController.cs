@@ -39,7 +39,7 @@ namespace VehiDenceAPI.Controllers
                 try
                 {
                     await _emailService.SendEmailAsync(user.Email, subject, message);   
-                    return StatusCode(200,"Registration successful. Please check your email for validation instructions.");
+                    return StatusCode(100, "Registration successful. Please check your email for validation instructions.");
                 }
                 catch (Exception ex)
                 {
