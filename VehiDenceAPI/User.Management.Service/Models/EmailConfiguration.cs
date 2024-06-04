@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace User.Management.Service.Models
+﻿namespace User.Management.Service.Models
 {
     public class EmailConfiguration
     {
-        public string From {  get; set; } = null!; 
-        public string StmpServer { get; set; } = null!;
-        public int Port { get; set; }
-        public string UserName { get; set; } = null!;
-        public string Password { get; set; } = null!;
-
+        public string From {  get; private set; } = null!; 
+        public string StmpServer { get; private set; } = null!;
+        public int Port { get; private set; }
+        public string UserName { get; private set; } = null!;
+        public string Password { get; private set; } = null!;
     }
 }

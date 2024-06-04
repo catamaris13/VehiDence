@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using VehiDenceAPI.Models;
+using VehiDenceAPI.Services;
 
 namespace VehiDenceAPI.Controllers
 {
@@ -11,7 +10,6 @@ namespace VehiDenceAPI.Controllers
     public class  MasinaController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-
         public MasinaController(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -20,10 +18,6 @@ namespace VehiDenceAPI.Controllers
         [Route("AddMasina")]
         public Response AddMasina([FromForm] Masina masina, IFormFile? imageFile)
         {
-            Response response = new Response();
-            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
-            Dal dal = new Dal();
-
             if (imageFile != null && imageFile.Length > 0)
             {
                 using (var ms = new MemoryStream())
@@ -32,49 +26,32 @@ namespace VehiDenceAPI.Controllers
                     masina.ImageData = ms.ToArray();
                 }
             }
-
-            response = dal.AddMasina(masina, connection);
-            return response;
+            return new MasinaService().AddMasina(masina, 
+                new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
         }
 
         [HttpGet]
         [Route("MasinaList/{username}")]
         public Response MasinaListUsername(string username)
         {
-            Response response = new Response();
-            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
-            Dal dal = new Dal();
-            Masina masina = new Masina();
-            masina.Username = username;
-            response = dal.MasinaListUsername(masina, connection);
-
-            return response;
-
+            return new MasinaService().MasinaListUsername(new Masina(username),
+                new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
         }
+
         [HttpGet]
         [Route("MasinaList/{id:int}")]
         public Response MasinaListId(int id)
         {
-            Response response = new Response();
-            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
-            Dal dal = new Dal();
-            Masina masina = new Masina();
-            masina.Id = id;
-            response = dal.MasinaListId(masina, connection);
-
-            return response;
-
+            return new MasinaService().MasinaListId(new Masina(id),
+                new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
         }
+
         [HttpDelete]
         [Route("DeleteMasinaa")]
-        public Response DeleteMasina(Masina masina)
+        public Response DeleteMasina([FromForm] Masina masina)
         {
-            Response response = new Response();
-            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
-            Dal dal = new Dal();
-            response = dal.DeleteMasina(masina, connection);
-
-            return response;
+            return new MasinaService().DeleteMasina(masina, 
+                new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
         }
     }
 }

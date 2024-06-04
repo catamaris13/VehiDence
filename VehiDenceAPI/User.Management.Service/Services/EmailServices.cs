@@ -1,11 +1,5 @@
-﻿
-
-using System.Net.Mail;
-
+﻿using System.Net.Mail;
 using System.Net;
-
-
-
 
 namespace User.Management.Service.Services
 {
@@ -27,6 +21,5 @@ namespace User.Management.Service.Services
                                 subject,
                                 message));
         }
-
     }
 }
