@@ -16,22 +16,14 @@ namespace VehiDenceAPI.Migrations
                 type: "varbinary(max)",
                 nullable: false,
                 defaultValue: new byte[0]);
-
-            
-
-            
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            
-
             migrationBuilder.DropColumn(
                 name: "ImageData",
-                table: "Masina");
-
-            
+                table: "Masina");   
         }
     }
 }

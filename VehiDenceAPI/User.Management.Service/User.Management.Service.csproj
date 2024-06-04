@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Models\EmailConfiguration.cs~RF4d63766.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Hangfire" Version="1.8.12" />
     <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
