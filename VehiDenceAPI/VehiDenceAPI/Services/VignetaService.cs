@@ -53,7 +53,7 @@ namespace VehiDenceAPI.Services
 
         public Response DeleteVigneta(Vigneta vigneta, SqlConnection connection)
         {
-            SqlCommand cmd = new SqlCommand("Delete from Vigneta where NrInmatriculare='" + vigneta.NrInmatriculare + "'", connection);
+            SqlCommand cmd = new SqlCommand("Delete from Vigneta where id='" + vigneta.Id + "'", connection);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();

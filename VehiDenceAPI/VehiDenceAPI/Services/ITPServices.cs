@@ -29,7 +29,7 @@ namespace VehiDenceAPI.Services
 
         public Response DeleteITP(ITP itp, SqlConnection connection)
         {
-            SqlCommand cmd = new SqlCommand("Delete from ITP where NrInmatriculare='" + itp.NrInmatriculare + "'", connection);
+            SqlCommand cmd = new SqlCommand("Delete from ITP where id='" + itp.Id + "'", connection);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();

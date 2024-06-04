@@ -53,7 +53,7 @@ namespace VehiDenceAPI.Services
 
         public Response DeleteCasco(Casco casco, SqlConnection connection)
         {
-            SqlCommand cmd = new SqlCommand("Delete from Casco where NrInmatriculare='" + casco.NrInmatriculare + "'", connection);
+            SqlCommand cmd = new SqlCommand("Delete from Casco where id='" + casco.Id + "'", connection);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();

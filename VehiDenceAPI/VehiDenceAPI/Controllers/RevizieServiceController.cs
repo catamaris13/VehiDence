@@ -30,7 +30,7 @@ namespace VehiDenceAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteRevizieService")]
-        public Response DeleteRevizieService(RevizieService revizieService)
+        public Response DeleteRevizieService([FromForm] RevizieService revizieService)
         {
             return new RevizieServiceService().DeleteRevizieService(revizieService,
                 new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));

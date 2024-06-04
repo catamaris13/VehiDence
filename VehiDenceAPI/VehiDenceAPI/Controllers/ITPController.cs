@@ -32,7 +32,7 @@ namespace VehiDenceAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteITP")]
-        public Response DeleteITP(ITP itp)
+        public Response DeleteITP([FromForm] ITP itp)
         {
             return new ITPServices().DeleteITP(itp,
                 new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));

@@ -48,7 +48,7 @@ namespace VehiDenceAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteMasinaa")]
-        public Response DeleteMasina(Masina masina)
+        public Response DeleteMasina([FromForm] Masina masina)
         {
             return new MasinaService().DeleteMasina(masina, 
                 new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));

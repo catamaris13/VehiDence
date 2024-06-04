@@ -39,7 +39,7 @@ namespace VehiDenceAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteCasco")]
-        public Response DeleteCaco(Casco casco)
+        public Response DeleteCaco([FromForm]Casco casco)
         {
             return new CascoService().DeleteCasco(casco,
                 new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));

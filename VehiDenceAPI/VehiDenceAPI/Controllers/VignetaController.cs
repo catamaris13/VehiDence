@@ -39,7 +39,7 @@ namespace VehiDenceAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteVigneta")]
-        public Response DeleteVigneta(Vigneta vigneta)
+        public Response DeleteVigneta([FromForm] Vigneta vigneta)
         {
             return new VignetaService().DeleteVigneta(vigneta,
                 new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));

@@ -38,10 +38,14 @@ namespace VehiDenceAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteAsigurare")]
-        public Response DeleteAsigurare(Asigurare asigurare)
+        public Response DeleteAsigurare([FromForm] Asigurare asigurare)
         {
-            return new AsigurareService().DeleteAsigurare(asigurare,
-                new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString());
+            AsigurareService dal = new AsigurareService();
+            response = dal.DeleteAsigurare(asigurare, connection);
+
+            return response;
         }
 
         [HttpGet]

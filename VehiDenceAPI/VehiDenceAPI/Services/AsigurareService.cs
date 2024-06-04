@@ -55,7 +55,7 @@ namespace VehiDenceAPI.Services
 
         public Response DeleteAsigurare(Asigurare asigurare, SqlConnection connection)
         {
-            SqlCommand cmd = new SqlCommand("Delete from Asigurare where NrInmatriculare='" + asigurare.NrInmatriculare + "'", connection);
+            SqlCommand cmd = new SqlCommand("Delete from Asigurare where id='" + asigurare.Id + "'", connection);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();

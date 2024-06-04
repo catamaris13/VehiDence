@@ -24,7 +24,7 @@ namespace VehiDenceAPI.Services
 
         public Response DeleteRevizieService(RevizieService revizieService, SqlConnection connection)
         {
-            SqlCommand cmd = new SqlCommand("Delete from RevizieService where SerieSasiu='" + revizieService.SerieSasiu + "'", connection);
+            SqlCommand cmd = new SqlCommand("Delete from RevizieService where id='" + revizieService.Id + "'", connection);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();

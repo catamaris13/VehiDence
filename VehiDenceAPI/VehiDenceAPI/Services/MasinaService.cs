@@ -82,7 +82,7 @@ namespace VehiDenceAPI.Services
         } 
         public Response DeleteMasina(Masina masina, SqlConnection connection)
         {
-            SqlCommand cmd = new SqlCommand("Delete from Masina where username='" + masina.Username + "' and NrInmatriculare='" + masina.NrInmatriculare + "'", connection);
+            SqlCommand cmd = new SqlCommand("Delete from Masina where id='" + masina.Id + "'", connection);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();

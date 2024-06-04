@@ -39,7 +39,7 @@ namespace VehiDenceAPI.Controllers
 
         [HttpDelete]
         [Route("DeletePermisConducere")]
-        public Response DeletePermisConducere(PermisConducere pc)
+        public Response DeletePermisConducere([FromForm] PermisConducere pc)
         {
             return new PermisConducereServices().DeletePermisConducere(pc,
                 new SqlConnection(_configuration.GetConnectionString("VehiDenceConnectionString").ToString()));
