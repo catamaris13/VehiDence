@@ -5,14 +5,16 @@
 
     border-radius: 10px; /* Colțuri rotunjite pentru card */
     margin-bottom: 2%; /* Spațiu între carduri */
+    margin-top: 0px;
 
 }
 .card-info img{
-    width: 30%;
+    width: 25%;
     height: auto;
-    margin-top: 2%;
+    margin-top: 0;
     margin-bottom: 2%;
     border-radius: 5%;
+    
 }
 .info{
     font-size: 1.2em;

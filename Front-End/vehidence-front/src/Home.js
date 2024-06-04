@@ -199,24 +199,7 @@ const Home = () => {
               <li style={{ "--delay": 1 }}>
                 <a href="/new_car">Add Car</a>
               </li>
-              <li style={{ "--delay": 2 }}>
-                <a href="/new_casco">Casco</a>
-              </li>
-              <li style={{ "--delay": 3 }}>
-                <a href="/new_itp">ITP</a>
-              </li>
-              <li style={{ "--delay": 4 }}>
-                <a href="new_insurance">Insurance</a>
-              </li>
-              <li style={{ "--delay": 4 }}>
-                <a href="new_driver_license">Driver license</a>
-              </li>
-              <li style={{ "--delay": 4 }}>
-                <a href="new_vignette">Vignette</a>
-              </li>
-              <li style={{ "--delay": 4 }}>
-                <a href="new_service">Car Service</a>
-              </li>
+              
             </ul>
           </div>
           </div>
@@ -252,24 +235,6 @@ const Home = () => {
             <ul className="dropdown-content">
               <li style={{ "--delay": 1 }}>
                 <a href="/new_car">Add Car</a>
-              </li>
-              <li style={{ "--delay": 2 }}>
-                <a href="/new_casco">Casco</a>
-              </li>
-              <li style={{ "--delay": 3 }}>
-                <a href="/new_itp">ITP</a>
-              </li>
-              <li style={{ "--delay": 4 }}>
-                <a href="new_insurance">Insurance</a>
-              </li>
-              <li style={{ "--delay": 4 }}>
-                <a href="new_driver_license">Driver license</a>
-              </li>
-              <li style={{ "--delay": 4 }}>
-                <a href="new_vignette">Vignette</a>
-              </li>
-              <li style={{ "--delay": 4 }}>
-                <a href="new_service">Car Service</a>
               </li>
             </ul>
           </div>

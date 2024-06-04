@@ -19,7 +19,7 @@ const ITPDropDown = () => {
       .get(`http://localhost:5277/api/Masina/MasinaList/${id}`)
       .then((response) => {
         const carData = response.data.listMasina;
-        
+
         setCar(carData);
         if (carData.length > 0) {
           setNrInmatriculare(carData[0].nrInmatriculare);
@@ -35,7 +35,7 @@ const ITPDropDown = () => {
       axios
         .get(`http://localhost:5277/api/ITP/ITPList/${nrInmatriculare}`)
         .then((response) => {
-          const itpData = response.data.listITP
+          const itpData = response.data.listITP;
           setItp(itpData);
         })
         .catch((error) => {
@@ -44,44 +44,62 @@ const ITPDropDown = () => {
     }
   }, [nrInmatriculare]);
 
-
-
   const formatSimpleDate = (dateString) => {
     const date = new Date(dateString);
-    const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    const formattedDate = `${date.getDate()}-${
+      date.getMonth() + 1
+    }-${date.getFullYear()}`;
     return formattedDate;
   };
 
-  return (
-    <div className="drop-down">
-      <div
-        className={`drop-down-item ${openIndex === "itp" ? "active" : ""}`}
-        onClick={() => toggleAccordion("itp")}
-      >
-        <div className="drop-down-header" style={{ "--delay": 1 }}>
-          <h3>ITP</h3>
-        </div>
-        {itp.length > 0 &&
-          itp.map((itpItem, index) => (
-            <div className="drop-down-body" key={index}>
-              <div className="content-container">
-                <div className="text-container">
-                  <p>Create date: {formatSimpleDate(itpItem.dataCreare)}</p>
-                  <p>End date: {formatSimpleDate(itpItem.dataExpirare)}</p>
+  if (itp) {
+    return (
+      <div className="drop-down">
+        <div
+          className={`drop-down-item ${openIndex === "itp" ? "active" : ""}`}
+          onClick={() => toggleAccordion("itp")}
+        >
+          <div className="drop-down-header" style={{ "--delay": 1 }}>
+            <h3>ITP</h3>
+          </div>
+          {itp.length > 0 &&
+            itp.map((itpItem, index) => (
+              <div className="drop-down-body" key={index}>
+                <div className="content-container">
+                  <div className="text-container">
+                    <p>Create date: {formatSimpleDate(itpItem.dataCreare)}</p>
+                    <p>End date: {formatSimpleDate(itpItem.dataExpirare)}</p>
+                  </div>
                 </div>
+                {itpItem.isValid === 1 && <p className="is-valid">Valid</p>}
+                {itpItem.isValid === 0 && (
+                  <p className="is-not-valid">Not Valid</p>
+                )}
               </div>
-              {itpItem.isValid === 1 && (
-                <p className="is-valid">Valid</p>
-              )}
-              {itpItem.isValid === 0 && (
-                <p className="is-not-valid">Not Valid</p>
-              )}
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
-      
-    </div>
-  );
+    );
+  }
+  else{
+    return (
+      <div className="drop-down">
+        <div
+          className={`drop-down-item ${
+            openIndex === "itp" ? "active" : ""
+          }`}
+          onClick={() => toggleAccordion("itp")}
+        >
+          <div className="drop-down-header" style={{ "--delay": 1 }}>
+            <h3>ITP</h3>
+          </div>
+          <div className="drop-down-body">
+            <h3 style={{color: "white", display: "flex", justifyContent:"center", alignItems:"center"}}>Don't have</h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default ITPDropDown;

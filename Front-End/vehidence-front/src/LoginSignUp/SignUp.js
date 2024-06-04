@@ -35,18 +35,12 @@ const SignUp = () => {
         const url='http://localhost:5277/api/User/Registration';
         axios.post(url,data)
         .then((result)=>{
-            const dt=result.data;
-            console.log(dt.StatusCode);
-            
-                console.log(data)
-
-                history("/login");
-                //window.location.href('/signup')
-            
+            history("/login");
           })
           
         .catch((error)=>{
             console.log(error);
+            alert("User already exists. Plese login");
         })
     }
 

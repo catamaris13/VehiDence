@@ -5,9 +5,11 @@ import ErrorPage from "../ErrorPage/ErrorPage";
 import "./carInfo.css";
 import CascoDropDown from "./Content/CascoDropDown";
 import AsigurareDropDown from "./Content/AsigurareDropDown";
-import ITPDropDown from "./Content/ITPDropDown"
+import ITPDropDown from "./Content/ITPDropDown";
 import ServiceDropDown from "./Content/ServiceDropDown";
 import VinietaDropDown from "./Content/VinietaDropDown";
+import Navbar from "../NavBar/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const CarInfo = () => {
   const { id } = useParams();
@@ -16,6 +18,7 @@ const CarInfo = () => {
   const [asigurare, setAsigurare] = useState([]);
   const [itp, setItp] = useState(null);
   const [nrInmatriculare, setNrInmatriculare] = useState("");
+  const history = useNavigate();
   const [login, setLogin] = useState(
     localStorage.getItem("islogin")
       ? JSON.parse(localStorage.getItem("islogin"))
@@ -37,58 +40,14 @@ const CarInfo = () => {
       });
   }, [id]);
 
-  useEffect(() => {
-    if (nrInmatriculare) {
-      axios
-        .get(`http://localhost:5277/api/Casco/CascoList/${nrInmatriculare}`)
-        .then((response) => {
-          const cascoData = response.data.listCasco;
-          setCasco(cascoData);
-        })
-        .catch((error) => {
-          console.error("Error fetching Casco data", error);
-        });
-    }
-  }, [nrInmatriculare]);
-
-  useEffect(() => {
-    if (nrInmatriculare) {
-      axios
-        .get(`http://localhost:5277/api/Asigurare/AsigurareList/${nrInmatriculare}`)
-        .then((response) => {
-          const asigurareData = response.data.listAsigurare;
-          setAsigurare(asigurareData);
-        })
-        .catch((error) => {
-          if (error.response && error.response.status === 404) {
-            console.error("Asigurare data not found");
-            setAsigurare([]); // Handle not found
-          } else {
-            console.error("Error fetching Asigurare data", error);
-          }
-        });
-    }
-  }, [nrInmatriculare]);
-
-  useEffect(() => {
-    if (nrInmatriculare) {
-      axios
-        .get(`http://localhost:5277/api/ITP/ITPList/${nrInmatriculare}`)
-        .then((response) => {
-          const itpData = response.data.listITP;
-          setItp(itpData);
-        })
-        .catch((error) => {
-          console.error("Error fetching ITP data", error);
-        });
-    }
-  }, [nrInmatriculare]);
-
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleAccordion = (index) => {
     setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
   };
+  const handleSubmit = () =>{
+    history("/home");
+  }
 
   if (!car) return <div className="text">Loading...</div>;
   if (login) {
@@ -100,32 +59,65 @@ const CarInfo = () => {
             : "placeholder.jpg";
 
           return (
-            <div className="container-info" key={index}>
-              <div className="card-info">
-                <img
-                  src={imageSrc}
-                  alt={car.marca}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "placeholder.jpg";
-                  }}
-                />
-                <div className="info">
-                  <h5>
-                    {car.marca} {car.model}
-                  </h5>
-                  <p>Registration number: {car.nrInmatriculare}</p>
-                  <p>Car chassis number: {car.serieSasiu}</p>
+            <div className="ceva">
+              <Navbar />
+              <div className="button-container-add-casco">
+                <button className="button-new-casco" onClick={handleSubmit} form="arrow">
+                  Return
+                </button>
+              </div>
+              <div className="container-info" key={index}>
+                <div className="dropdown">
+                  <button className="dropdown-btn">
+                    <span>New +</span>
+                    <span className="arrow"></span>
+                  </button>
+                  <ul className="dropdown-content">
+                    <li style={{ "--delay": 2 }}>
+                      <a href="/new_casco">Casco</a>
+                    </li>
+                    <li style={{ "--delay": 3 }}>
+                      <a href="/new_itp">ITP</a>
+                    </li>
+                    <li style={{ "--delay": 4 }}>
+                      <a href="new_insurance">Insurance</a>
+                    </li>
+                    <li style={{ "--delay": 4 }}>
+                      <a href="new_driver_license">Driver license</a>
+                    </li>
+                    <li style={{ "--delay": 4 }}>
+                      <a href="new_vignette">Vignette</a>
+                    </li>
+                    <li style={{ "--delay": 4 }}>
+                      <a href="new_service">Car Service</a>
+                    </li>
+                  </ul>
                 </div>
-              </div>
+                <div className="card-info">
+                  <img
+                    src={imageSrc}
+                    alt={car.marca}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "placeholder.jpg";
+                    }}
+                  />
+                  <div className="info">
+                    <h5>
+                      {car.marca} {car.model}
+                    </h5>
+                    <p>Registration number: {car.nrInmatriculare}</p>
+                    <p>Car chassis number: {car.serieSasiu}</p>
+                  </div>
+                </div>
 
-              <CascoDropDown/>
-              <AsigurareDropDown/>
-              <ITPDropDown/>
-              <ServiceDropDown/>
-              <VinietaDropDown/>
-              
+                <CascoDropDown />
+                <AsigurareDropDown />
+                <ITPDropDown />
+                <ServiceDropDown />
+                <VinietaDropDown />
               </div>
+            </div>
           );
         })}
       </div>

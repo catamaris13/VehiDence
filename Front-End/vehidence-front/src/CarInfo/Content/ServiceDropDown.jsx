@@ -19,7 +19,7 @@ const ServiceDropDown = () => {
       .get(`http://localhost:5277/api/Masina/MasinaList/${id}`)
       .then((response) => {
         const carData = response.data.listMasina;
-        
+
         setCar(carData);
         if (carData.length > 0) {
           setSerieSasiu(carData[0].serieSasiu);
@@ -33,9 +33,11 @@ const ServiceDropDown = () => {
   useEffect(() => {
     if (serieSasiu) {
       axios
-        .get(`http://localhost:5277/api/RevizieService/RevizieServiceList/${serieSasiu}`)
+        .get(
+          `http://localhost:5277/api/RevizieService/RevizieServiceList/${serieSasiu}`
+        )
         .then((response) => {
-          const serviceData = response.data.listRevizieService
+          const serviceData = response.data.listRevizieService;
           setService(serviceData);
         })
         .catch((error) => {
@@ -44,39 +46,57 @@ const ServiceDropDown = () => {
     }
   }, [serieSasiu]);
 
-
-
-  return (
-    <div className="drop-down">
-      <div
-        className={`drop-down-item ${openIndex === "service" ? "active" : ""}`}
-        onClick={() => toggleAccordion("service")}
-      >
-        <div className="drop-down-header" style={{ "--delay": 1 }}>
-          <h3>Service</h3>
-        </div>
-        {service.length > 0 &&
-          service.map((serviceItem, index) => (
-            <div className="drop-down-body" key={index}>
-              <div className="content-container">
-                <div className="text-container">
-                  <p>Service name: {serviceItem.serviceName}</p>
-                  <p>Last km at service: {serviceItem.kmUltim}</p>
-                  <p>Expire km: {serviceItem.kmExpirare}</p>
+  if (service) {
+    return (
+      <div className="drop-down">
+        <div
+          className={`drop-down-item ${
+            openIndex === "service" ? "active" : ""
+          }`}
+          onClick={() => toggleAccordion("service")}
+        >
+          <div className="drop-down-header" style={{ "--delay": 1 }}>
+            <h3>Service</h3>
+          </div>
+          {service.length > 0 &&
+            service.map((serviceItem, index) => (
+              <div className="drop-down-body" key={index}>
+                <div className="content-container">
+                  <div className="text-container">
+                    <p>Service name: {serviceItem.serviceName}</p>
+                    <p>Last km at service: {serviceItem.kmUltim}</p>
+                    <p>Expire km: {serviceItem.kmExpirare}</p>
+                  </div>
                 </div>
+                {serviceItem.isValid === 1 && <p className="is-valid">Valid</p>}
+                {serviceItem.isValid === 0 && (
+                  <p className="is-not-valid">Not Valid</p>
+                )}
               </div>
-              {serviceItem.isValid === 1 && (
-                <p className="is-valid">Valid</p>
-              )}
-              {serviceItem.isValid === 0 && (
-                <p className="is-not-valid">Not Valid</p>
-              )}
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
-      
-    </div>
-  );
+    );
+  }
+  else{
+    return (
+      <div className="drop-down">
+        <div
+          className={`drop-down-item ${
+            openIndex === "service" ? "active" : ""
+          }`}
+          onClick={() => toggleAccordion("service")}
+        >
+          <div className="drop-down-header" style={{ "--delay": 1 }}>
+            <h3>Service</h3>
+          </div>
+          <div className="drop-down-body">
+            <h3 style={{color: "white", display: "flex", justifyContent:"center", alignItems:"center"}}>Don't have</h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default ServiceDropDown;
