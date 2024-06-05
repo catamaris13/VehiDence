@@ -39,7 +39,6 @@ const Login = () => {
           localStorage.setItem("islogin", true);
           localStorage.setItem('email',email);
           history("/home");
-          //window.location.href('/signup')
         } else {
           if (dt.statusCode === 100) alert(dt.statusMessage);
         }

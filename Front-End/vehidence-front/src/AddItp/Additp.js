@@ -91,7 +91,7 @@ const AddItp = () => {
                 type="text"
                 placeholder="Registration number"
                 value={nrInmatriculare}
-                onChange={(e) => setNrInmatriculare(e.target.value)}
+                onChange={(e) => setNrInmatriculare(e.target.value.toUpperCase())}
               />
             </div>
           </div>

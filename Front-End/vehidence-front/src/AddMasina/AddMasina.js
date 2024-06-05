@@ -10,7 +10,6 @@ const AddMasina = () => {
   const [marca, setMarca] = useState("");
   const [model, setModel] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  //const username = localStorage.getItem('username');
   const [id, setId] = useState("");
   const [imageData, setImageData] = useState("");
   const navigate = useNavigate();
@@ -104,7 +103,7 @@ const AddMasina = () => {
                 type="text"
                 placeholder="Car brand"
                 value={marca}
-                onChange={(e) => setMarca(e.target.value)}
+                onChange={(e) => setMarca(e.target.value.toUpperCase())}
               />
             </div>
 
@@ -113,7 +112,7 @@ const AddMasina = () => {
                 type="text"
                 placeholder="Car model"
                 value={model}
-                onChange={(e) => setModel(e.target.value)}
+                onChange={(e) => setModel(e.target.value.toUpperCase())}
               />
             </div>
           </div>
@@ -124,7 +123,8 @@ const AddMasina = () => {
                 type="text"
                 placeholder="Registration number"
                 value={nrInmatriculare}
-                onChange={(e) => setNrInmatriculare(e.target.value)}
+                onChange={(e) => setNrInmatriculare(e.target.value.toUpperCase())}
+
               />
             </div>
             <div className="input-fara-poza">
@@ -132,7 +132,7 @@ const AddMasina = () => {
                 type="text"
                 placeholder="Car chassis number"
                 value={serieSasiu}
-                onChange={(e) => setSerieSasiu(e.target.value)}
+                onChange={(e) => setSerieSasiu(e.target.value.toUpperCase())}
               />
             </div>
           </div>

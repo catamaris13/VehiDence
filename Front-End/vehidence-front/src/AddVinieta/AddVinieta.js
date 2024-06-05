@@ -74,10 +74,10 @@ const AddVinieta = () => {
       if (response.status === 200) {
         navigate("/home");
       } else {
-        alert("Casco was not added...");
+        alert("Vignette was not added...");
       }
     } catch (error) {
-      console.error("Eroare la adăugarea casco:", error);
+      console.error("Eroare la adăugarea vignette:", error);
     }
 
   };
@@ -105,7 +105,7 @@ const AddVinieta = () => {
                 type="text"
                 placeholder="Country"
                 value={tara}
-                onChange={(e) => setTara(e.target.value)}
+                onChange={(e) => setTara(e.target.value.toUpperCase())}
               />
             </div>
             <div className="input-fara-poza">
@@ -113,13 +113,12 @@ const AddVinieta = () => {
                 type="text"
                 placeholder="Registration number"
                 value={nrInmatriculare}
-                onChange={(e) => setNrInmatriculare(e.target.value)}
+                onChange={(e) => setNrInmatriculare(e.target.value.toUpperCase())}
               />
             </div>
           </div>
         </div>
         <div className="datepickers-container">
-          {/* Calendar pentru dataCreare */}
           <div className="datepicker-container">
             <label>Create Date:</label>
             <DatePicker
@@ -128,7 +127,6 @@ const AddVinieta = () => {
             />
           </div>
 
-          {/* Calendar pentru dataExpirare */}
           <div className="datepicker-container">
             <label>Expiration Date:</label>
             <DatePicker

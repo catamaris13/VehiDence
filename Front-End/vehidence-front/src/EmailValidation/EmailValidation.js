@@ -19,12 +19,11 @@ const EmailValidation = () => {
         const token = searchParams.get('token');
 
         if (username && token) {
-            // Call backend API to validate the username and token
             axios.get(`http://localhost:5277/api/User/ValidateEmail?username=${username}&token=${token}`)
                 .then(response => {
                     if(response.data.statusCode == 200){
                         console.log(response.data);
-                        setValidationSuccess(true); // Update validation status
+                        setValidationSuccess(true); 
                     }
                     else{
                         setValidationSuccess(false);
@@ -33,20 +32,19 @@ const EmailValidation = () => {
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    setValidationSuccess(false); // Update validation status
+                    setValidationSuccess(false); 
                 })
                 .finally(() => {
-                    setLoading(false); // Update loading status
+                    setLoading(false); 
                 });
         } else {
-            // If username or token is missing, set loading to false and validation to false
             setLoading(false);
             setValidationSuccess(false);
         }
     }, [location.search]);
 
     if (loading) {
-        return <div>Loading...</div>; // Render a loading indicator
+        return <div>Loading...</div>; 
     } else {
         if (validationSuccess) {
             return (
@@ -60,7 +58,7 @@ const EmailValidation = () => {
             return (
                 <div className="validation">
                     <h1 className="text">Email Validation Failed</h1>
-                    {/* Add any error message or redirect to an error page */}
+                   
                 </div>
             );
         }

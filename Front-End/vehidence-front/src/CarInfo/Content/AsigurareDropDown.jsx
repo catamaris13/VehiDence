@@ -17,9 +17,8 @@ const AsigurareDropDown = () => {
 
   const formatSimpleDate = (dateString) => {
     const date = new Date(dateString);
-    const formattedDate = `${date.getDate()}-${
-      date.getMonth() + 1
-    }-${date.getFullYear()}`;
+    const formattedDate = `${date.getDate()}-${date.getMonth() + 1
+      }-${date.getFullYear()}`;
     return formattedDate;
   };
 
@@ -46,18 +45,21 @@ const AsigurareDropDown = () => {
         )
         .then((response) => {
           const asigurareData = response.data.listAsigurare;
+          console.log(asigurareData)
           setAsigurare(asigurareData);
         })
         .catch((error) => {
           if (error.response && error.response.status === 404) {
             console.error("Asigurare data not found");
-            setAsigurare([]); // Handle not found
+            setAsigurare([]); 
           } else {
             console.error("Error fetching Asigurare data", error);
           }
         });
     }
   }, [nrInmatriculare, car]);
+
+  
 
   const handleImageClick = (imageData) => {
     setSelectedImage(imageData);
@@ -67,9 +69,8 @@ const AsigurareDropDown = () => {
     return (
       <div className="drop-down">
         <div
-          className={`drop-down-item ${
-            openIndex === "asigurare" ? "active" : ""
-          }`}
+          className={`drop-down-item ${openIndex === "asigurare" ? "active" : ""
+            }`}
           onClick={() => toggleAccordion("asigurare")}
         >
           <div className="drop-down-header" style={{ "--delay": 1 }}>
@@ -135,16 +136,24 @@ const AsigurareDropDown = () => {
     return (
       <div className="drop-down">
         <div
-          className={`drop-down-item ${
-            openIndex === "asigurare" ? "active" : ""
-          }`}
+          className={`drop-down-item ${openIndex === "asigurare" ? "active" : ""
+            }`}
           onClick={() => toggleAccordion("asigurare")}
         >
           <div className="drop-down-header" style={{ "--delay": 1 }}>
             <h3>Insurance</h3>
           </div>
           <div className="drop-down-body">
-            <h3 style={{color: "white", display: "flex", justifyContent:"center", alignItems:"center"}}>Don't have</h3>
+            <h3
+              style={{
+                color: "white",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              Don't have
+            </h3>
           </div>
         </div>
       </div>

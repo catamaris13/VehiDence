@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios"; // Import axios for HTTP requests
+import axios from "axios"; 
 import emailIcon from "../assets/email_img.png";
 import "../index.css";
 
 const EnterEmailPage = () => {
   const [email, setEmail] = useState("");
-  const [showPopup, setShowPopup] = useState(false); // State variable to control the visibility of the pop-up message
+  const [showPopup, setShowPopup] = useState(false); 
   const [errorEmail, setErrorEmail] = useState(false);
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -28,7 +28,7 @@ const EnterEmailPage = () => {
         console.log(response.data);
         if (response.status == 200) {
           console.log("Email was successfully sent");
-          setShowPopup(true); // Show the pop-up message if email was successfully sent
+          setShowPopup(true); 
           setEmail("");
         } else {
           console.log("Failed to send email");
@@ -60,7 +60,6 @@ const EnterEmailPage = () => {
         </button>
       </div>
 
-      {/* Pop-up message */}
       {showPopup && (
         <div className="popup-container">
           <div className="popup-content">

@@ -142,7 +142,6 @@ const AddPermis = () => {
           </div>
         </div>
         <div className="datepickers-container">
-          {/* Calendar pentru dataCreare */}
           <div className="datepicker-container">
             <label>Create Date:</label>
             <DatePicker
@@ -151,7 +150,6 @@ const AddPermis = () => {
             />
           </div>
 
-          {/* Calendar pentru dataExpirare */}
           <div className="datepicker-container">
             <label>Expiration Date:</label>
             <DatePicker

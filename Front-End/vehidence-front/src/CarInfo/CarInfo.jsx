@@ -30,9 +30,11 @@ const CarInfo = () => {
       .get(`http://localhost:5277/api/Masina/MasinaList/${id}`)
       .then((response) => {
         const carData = response.data.listMasina;
-        setCar(carData);
-        if (carData.length > 0) {
-          setNrInmatriculare(carData[0].nrInmatriculare);
+        if (carData) {
+          setCar(carData);
+          if (carData.length > 0) {
+            setNrInmatriculare(carData[0].nrInmatriculare);
+          }
         }
       })
       .catch((error) => {
@@ -45,9 +47,13 @@ const CarInfo = () => {
   const toggleAccordion = (index) => {
     setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
   };
-  const handleSubmit = () =>{
+  const handleSubmit = () => {
     history("/home");
-  }
+  };
+  const handleNavigation = (e, path) => {
+    e.preventDefault();
+    history(path);
+  };
 
   if (!car) return <div className="text">Loading...</div>;
   if (login) {
@@ -61,38 +67,46 @@ const CarInfo = () => {
           return (
             <div className="ceva">
               <Navbar />
-              <div className="button-container-add-casco">
-                <button className="button-new-casco" onClick={handleSubmit} form="arrow">
-                  Return
-                </button>
-              </div>
-              <div className="container-info" key={index}>
-                <div className="dropdown">
-                  <button className="dropdown-btn">
-                    <span>New +</span>
-                    <span className="arrow"></span>
+              <div className="aranjare-return-new">
+                <div className="button-container-return">
+                  <button
+                    className="button-return"
+                    onClick={handleSubmit}
+                    form="arrow"
+                  >
+                    &#8678;
                   </button>
-                  <ul className="dropdown-content">
-                    <li style={{ "--delay": 2 }}>
-                      <a href="/new_casco">Casco</a>
-                    </li>
-                    <li style={{ "--delay": 3 }}>
-                      <a href="/new_itp">ITP</a>
-                    </li>
-                    <li style={{ "--delay": 4 }}>
-                      <a href="new_insurance">Insurance</a>
-                    </li>
-                    <li style={{ "--delay": 4 }}>
-                      <a href="new_driver_license">Driver license</a>
-                    </li>
-                    <li style={{ "--delay": 4 }}>
-                      <a href="new_vignette">Vignette</a>
-                    </li>
-                    <li style={{ "--delay": 4 }}>
-                      <a href="new_service">Car Service</a>
-                    </li>
-                  </ul>
+                  <div className="dropdown">
+                    <button className="dropdown-btn">
+                      <span>New +</span>
+                      <span className="arrow"></span>
+                    </button>
+                    <ul className="dropdown-content">
+                      <li style={{ "--delay": 2 }}>
+                        <a href="/new_casco" onClick={(e) => handleNavigation(e, "/new_casco")}>Casco</a>
+                      </li>
+                      <li style={{ "--delay": 3 }}>
+                        <a href="/new_itp" onClick={(e) => handleNavigation(e, "/new_itp")}>ITP</a>
+                      </li>
+                      <li style={{ "--delay": 4 }}>
+                        <a href="/new_insurance" onClick={(e) => handleNavigation(e, "/new_insurance")}>Insurance</a>
+                      </li>
+                      <li style={{ "--delay": 4 }}>
+                        <a href="/new_driver_license" onClick={(e) => handleNavigation(e, "/new_driver_license")}>Driver license</a>
+                      </li>
+                      <li style={{ "--delay": 4 }}>
+                        <a href="/new_vignette" onClick={(e) => handleNavigation(e, "/new_vignette")}>Vignette</a>
+                      </li>
+                      <li style={{ "--delay": 4 }}>
+                        <a href="/new_service" onClick={(e) => handleNavigation(e, "/new_service")}>Car Service</a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+              </div>
+
+              <div className="container-info" key={index}>
+
                 <div className="card-info">
                   <img
                     src={imageSrc}

@@ -35,6 +35,7 @@ const SignUp = () => {
         const url='http://localhost:5277/api/User/Registration';
         axios.post(url,data)
         .then((result)=>{
+            if(result.status)
             history("/login");
           })
           

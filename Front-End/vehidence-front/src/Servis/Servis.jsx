@@ -8,7 +8,6 @@ const Servis = () => {
   const [kmUltim, setKmUltim] = useState("");
   const [kmExpirare, setKmExpirare] = useState("");
   const [serviceName, setServiceName] = useState("");
-  //const username = localStorage.getItem('username');
   const [id, setId] = useState("");
   const navigate = useNavigate();
 
@@ -20,25 +19,40 @@ const Servis = () => {
 
   const handleSubmit = async (e) => {
     
-    const servis = {
+    /*const servis = {
         serieSasiu: serieSasiu,
         kmUltim: parseInt(kmUltim),
         kmExpirare: parseInt(kmExpirare),
         serviceName: serviceName,
-    };
-    axios.post("http://localhost:5277/api/RevizieService/AddRevizieService", servis)
-    .then((rezultat) => {
-        if(rezultat.data.statusCode == 200){
-            navigate("/home");
+    };*/
+    const service = new FormData();
+    service.append("SerieSasiu", serieSasiu);
+    service.append("KmUltim", kmUltim);
+    service.append("KmExpirare", kmExpirare);
+    service.append("ServiceName", serviceName);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5277/api/RevizieService/AddRevizieService",
+        service,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-        else {
-            alert("Service was not added")
-        }
-    })
-    .catch((error)=>{
-        console.log("Servisul are o eroare ",error);
-        alert("Service was not added");
-    })
+      );
+      console.log(response.data);
+
+      if (response.status === 200) {
+        navigate("/home");
+      } else {
+        alert("Service was not added...");
+      }
+    } catch (error) {
+      console.error("Eroare la adăugarea servis:", error);
+      alert("Service was not added")
+    }
+
 
   };
   if (login) {
@@ -78,7 +92,7 @@ const Servis = () => {
                 type="text"
                 placeholder="Car chassis number"
                 value={serieSasiu}
-                onChange={(e) => setSerieSasiu(e.target.value)}
+                onChange={(e) => setSerieSasiu(e.target.value.toUpperCase())}
               />
             </div>
           </div>

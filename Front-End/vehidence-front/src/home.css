@@ -29,7 +29,6 @@
     min-height: 100vh;
 }
   
-/* cardInfo.css */
 
 .card-body {
   padding: 5% !important;
@@ -157,21 +156,14 @@
   text-decoration: none;
   text-align: center;
 }
-/*.dropdown-btn:focus + .dropdown-content {
-  visibility: visible;
-} */
 .dropdown:focus-within .dropdown-content {
   visibility: visible;
 }
-/*.dropdown-btn:focus > .arrow {
-  transform: rotate(180deg);
-}*/
+
 .dropdown:focus-within .dropdown-btn > .arrow {
   transform: rotate(180deg);
 }
-/*.dropdown-btn:focus + .dropdown-content li {
-  left: 0;
-}*/
+
 .dropdown:focus-within .dropdown-content li {
   left: 0;
 }
